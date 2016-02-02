@@ -1,0 +1,41 @@
+body {
+    background-color: #111;
+    color: #aaa;
+    font-family: 'Proxima Nova', 'Arial', 'Helvetica', sans-serif;
+}
+.container {
+  width: 90%;
+  margin: 20px auto;
+}
+.controls {
+  margin-top: 30px;
+  /*font-size: 20px;*/
+}
+
+
+.controls .controls__size {
+  width: 100%;
+}
+
+.controls .controls__size .label {
+  width: 50px;
+  float: left;
+  margin: 0 auto;
+}
+
+.controls .controls__size .controls__option {
+  width: 200px;
+  float: left;
+}
+
+.controls .controls__size .option {
+    border: 2px solid #aaa;
+    padding: 8px 10px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.controls .controls__size .option:active, .option:hover {
+  background-color: #aaa;
+  color: #111;
+}
