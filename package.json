@@ -40,7 +40,6 @@
     "webpack-dev-server": "^1.12.1"
   },
   "dependencies": {
-    "classnames": "^2.2.3",
     "d3": "^3.5.14",
     "react": "^0.14.0",
     "react-dom": "^0.14.0"
