@@ -6,16 +6,24 @@ export default class Controls extends Component {
     super(props);
     this.state = {
       size: 20,
-      algorithm: this.props.algorithmList[0],
-
+      algorithm: [],
     };
   }
 
-  tick(event) {
-    console.log('clicked');
-
-    console.log(event);
+  tickAlgo(evt) {
+    this.state.algorithm.push(evt.target.text);
+    console.log(this.state.algorithm);
   }
+
+  tickSize(evt) {
+    this.setState({size: evt.target.text})
+    console.log(this.state.size)
+  }
+  // 
+  // componentDidUpdate () {
+  //     console.log('update. . .');
+  // }
+
   render() {
     return (
       <div className="controls">
@@ -23,7 +31,7 @@ export default class Controls extends Component {
              {
                this.props.algorithmList.map((algo, index) => {
                  return (
-                    <a className='option' key={index}  onClick={this.tick.bind(this)}>{algo}</a>
+                    <a className='option' key={index}  onClick={this.tickAlgo.bind(this)}>{algo}</a>
                    )
                })
              }
@@ -34,13 +42,12 @@ export default class Controls extends Component {
               {
                 this.props.sizes.map((size, index) => {
                   return (
-                      <a className="option" key={index}>{size}</a>
+                      <a className="option" key={index} onClick={this.tickSize.bind(this)}>{size}</a>
                     )
                 })
               }
             </div>
           </div>
-
          </div>
       )
   }
