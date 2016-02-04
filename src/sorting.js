@@ -1,5 +1,5 @@
-export function bubbleSort() {
-  var done = false;
+Array.prototype.bubblesort = function () {
+    var done = false;
     while (!done) {
         done = true;
         for (var i = 1; i < this.length; i++) {
