@@ -1,5 +1,3 @@
-
-
 $(document).ready(function () {
   console.log('wtf');
   var $selectRef = $('.controls__select .option');
