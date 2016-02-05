@@ -11,6 +11,7 @@ export default class d3Chart {
         .data(data)
       .enter().append("div")
       .attr('class', 'bar')
+        
         .style("width", function(d) { return x(d) + "px"; })
   }
 
