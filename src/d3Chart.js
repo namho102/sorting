@@ -10,6 +10,7 @@ export default class d3Chart {
       .selectAll("div")
         .data(data)
       .enter().append("div")
+      .attr('class', 'bar')
         .style("width", function(d) { return x(d) + "px"; })
   }
 
@@ -18,7 +19,4 @@ export default class d3Chart {
       this.create(el, data);
   }
 
-  swap(i , j) {
-    
-  }
 }

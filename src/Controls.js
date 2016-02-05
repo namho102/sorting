@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Chart from './Chart';
 
 import * as lib from './lib';
+import Sorting from './sorting';
+
 
 export default class Controls extends Component {
   constructor(props) {
@@ -16,6 +18,10 @@ export default class Controls extends Component {
   tickAlgo(evt) {
     this.setState({algorithm: evt.target.text});
     // this.state.algorithm.push(evt.target.text);
+    let data = this.state.data;
+    var sorting = new Sorting(data);
+    sorting.bubblesort();
+
     console.log(this.state.algorithm);
   }
 

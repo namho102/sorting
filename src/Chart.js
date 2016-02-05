@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import d3Chart from './d3Chart';
 import * as lib from './lib';
 
-const Bars = new d3Chart();
+const bars = new d3Chart();
 
 export default class Controls extends Component {
   constructor(props) {
@@ -16,14 +16,13 @@ export default class Controls extends Component {
 
   componentDidMount() {
     var el = ReactDOM.findDOMNode(this);
-    Bars.create(el, this.props.data);
+    bars.create(el, this.props.data);
   }
 
   componentDidUpdate() {
     console.log('updated');
     var el = ReactDOM.findDOMNode(this);
-
-    Bars.update(el, this.props.data);
+    bars.update(el, this.props.data);
   }
 
   componentWillUnmount() {
