@@ -30,7 +30,6 @@ export default class Controls extends Component {
 
   }
 
-
   render() {
     return (
       <div className='chart'>
