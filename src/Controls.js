@@ -22,14 +22,14 @@ export default class Controls extends Component {
     var sorting = new Sorting(data);
     sorting.bubblesort();
 
-    console.log(this.state.algorithm);
+    // console.log(this.state.algorithm);
   }
 
   tickSize(evt) {
     var newSize = evt.target.text;
     this.setState({size: newSize});
     this.setState({data: lib.generateData(newSize)});
-      console.log(this.state.size);
+    console.log(this.state.size);
   }
 
 
@@ -59,6 +59,7 @@ export default class Controls extends Component {
               </div>
             </div>
 
+              <a className='option'>Start</a>
         </div>
         <Chart data={this.state.data}/>
       </div>

@@ -1,20 +1,3 @@
-/*
-Array.prototype.bubblesort = function () {
-    var done = false;
-    while (!done) {
-        done = true;
-        for (var i = 1; i < this.length; i++) {
-            if (this[i - 1] > this[i]) {
-                done = false;
-                [this[i - 1], this[i]] = [this[i], this[i - 1]];
-                return this;
-            }
-        }
-    }
-    return this;
-}
-*/
-
 import d3 from 'd3';
 import d3Chart from './d3Chart';
 
@@ -36,28 +19,26 @@ export default class Sorting {
 
   bubblesort() {
     var done = false;
-
-    var self = this;
-    let arr = self.arr;
-    console.log(arr);
-
+    var arr = this.arr;
+    // arr[0] = ['fuck this']
+    // arr = ['fuck this']
     while (!done) {
         done = true;
         for (var i = 1; i < arr.length; i++) {
             if (arr[i - 1] > arr[i]) {
                 done = false;
-                this.swap(i - 1, i);
-                sleep(500);
+                // this.swap(i - 1, i);
+                // sleep(500);
                 [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]];
             }
         }
     }
-
+    console.log(this.arr);
+    console.log(arr);
     return arr;
   }
 
   swap(i , j) {
-    let bars = d3.selectAll('.bar');
     /*
     $(document).ready(function() {
       var firstChild = $('.bar:nth-child('+ i +')');
@@ -73,7 +54,9 @@ export default class Sorting {
 
       firstChild.css('background-color', '#aaa');
     })
+
     */
+    //    let bars = d3.selectAll('.bar');
     // firstChild.attr('fill', 'red');
     // console.log(firstChild.width(), secondChild.width());
     // let firstChild = d3.select(bars[i])[0];
