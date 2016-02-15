@@ -20,6 +20,8 @@ a {
     a.option:hover {
       border: 2px solid #FFF;
       color: #FFD700; }
+  a.selected {
+    border: 2px solid #FFF; }
 
 .icon {
   font-family: "fontello";

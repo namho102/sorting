@@ -11,6 +11,9 @@ var speed = ['1x', '2x', '3x'];
 var Controller = function () {
     function Controller() {
         _classCallCheck(this, Controller);
+
+        this.size = 10;
+        this.speed = '1x';
     }
 
     _createClass(Controller, [{
@@ -28,7 +31,36 @@ var Controller = function () {
             speed.forEach(function (el) {
                 d3.select("#speed").append("li").append("a").attr('class', 'option').text(el);
             });
-            //ACTION
+            //ACTION 
+        }
+    }, {
+        key: "getSize",
+        value: function getSize() {}
+    }, {
+        key: "getSpeed",
+        value: function getSpeed() {}
+    }, {
+        key: "setEvents",
+        value: function setEvents() {
+            var _this = this;
+
+            // var $sizeRef = $('#size a');
+            // console.log($sizeRef);
+            // $sizeRef.each(() => {
+            //     // console.log($(this));
+            //     $(this).click((evt) =>  {
+            //         this.size = $(evt.target).text();
+            //         //style
+            //         $sizeRef.removeClass('selected');
+            //         $(this).addClass('selected');
+            //     })
+            // })
+
+            $('#size a').click(function (evt) {
+                _this.size = $(evt.target).text();
+                $('#size a').removeClass('selected');
+                $(evt.target).addClass('selected');
+            });
         }
     }]);
 
@@ -37,3 +69,4 @@ var Controller = function () {
 
 var C = new Controller();
 C.createElements();
+C.setEvents();

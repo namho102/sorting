@@ -23,10 +23,14 @@ a {
     padding: 8px 10px;
     margin-bottom: 10px;
     cursor: pointer;
-    &:hover {
-        border: 2px solid #FFF;
-        color: #FFD700;
+        &:hover {
+            border: 2px solid #FFF;
+            color: #FFD700;
+        }
     }
+    
+    &.selected {
+        border: 2px solid #FFF;
     }
 }
 
@@ -48,10 +52,6 @@ ul {
 ul li {
     list-style-type: none;
     // flex-grow: 1;
-}
-
-.container {
-    
 }
 
 .controls {
