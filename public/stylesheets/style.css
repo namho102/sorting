@@ -51,3 +51,6 @@ ul li {
     display: flex; }
   .controls__speed {
     margin-left: 50px; }
+
+.bars {
+  margin: 30px 20px; }
