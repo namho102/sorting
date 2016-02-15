@@ -44,18 +44,6 @@ var Controller = function () {
         value: function setEvents() {
             var _this = this;
 
-            // var $sizeRef = $('#size a');
-            // console.log($sizeRef);
-            // $sizeRef.each(() => {
-            //     // console.log($(this));
-            //     $(this).click((evt) =>  {
-            //         this.size = $(evt.target).text();
-            //         //style
-            //         $sizeRef.removeClass('selected');
-            //         $(this).addClass('selected');
-            //     })
-            // })
-
             $('#size a').click(function (evt) {
                 _this.size = $(evt.target).text();
                 $('#size a').removeClass('selected');
