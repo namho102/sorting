@@ -1,21 +1,41 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>Visualization and Comparison of Sorting Algorithms</title>
 
-    <link rel="stylesheet" href="public/style.css">
-  </head>
-  <body>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Hello</title>
+    <link rel="stylesheet" href="public/stylesheets/style.css">
+</head>
+
+<body>
     <div class="container">
-      <div id='root'>
-      </div>
-
-      <div id='controls'>
-      </div>
-
+        <div class="controls">
+            <div class="controls__algs">
+                <span class="controls__label">Algorithm</span>
+                <ul id="algs"></ul>
+            </div>
+            <div class="controls__group">
+                <div class="controls__size">
+                    <span class="controls__label">Size</span>
+                    <ul id="size"></ul>
+                </div>
+                <div class="controls__speed">
+                    <span class="controls__label">Speed</span>
+                    <ul id="speed"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="buttons">
+            <a href="#" data-button="reload"><i class="icon icon-arrows-cw">&#xe800;</i></a>
+            <a href="#" data-button="play"><i class="icon icon-play">&#xe801;</i></a>
+            
+            
+        </div>
     </div>
 
-    <script src="public/jquery.min.js"></script>
-    <script src="public/custom.js"></script>
-    <script src="/static/bundle.js"></script>
-  </body>
+    <script src="public/libs/d3.v3.min.js"></script>
+    <script src="public/scripts/app.js"></script>
+</body>
+
 </html>
