@@ -112,7 +112,7 @@ class Bars {
             .attr("fill", "#20ADEE")
             .attr("height", 13)
             .attr("width", 0) // initial width of 0 for transition
-        // .attr("x", 2) 
+            // .attr("x", 2) 
             .attr("y", function (d, i) {
                 return i * 15;
             }) // height + margin between bars
