@@ -118,8 +118,9 @@ var Bars = function () {
 
             svg.attr('height', height);
 
-            var rects = svg.selectAll("rect").data(data);
             //create the rectangles for the bar chart
+            var rects = svg.selectAll("rect").data(data);
+
             // svg.selectAll("rect")
             //     .data(data)
             rects.enter().append("rect").attr("fill", "#20ADEE").attr("height", 13).attr("width", 0) // initial width of 0 for transition

@@ -100,9 +100,10 @@ class Bars {
 
         svg.attr('height', height);
         
+        //create the rectangles for the bar chart
         var rects = svg.selectAll("rect")
             .data(data);
-        //create the rectangles for the bar chart
+        
         // svg.selectAll("rect")
         //     .data(data)
         rects
