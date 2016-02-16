@@ -57,4 +57,5 @@ ul li {
   .bars svg {
     width: 50%; }
     .bars svg rect {
-      height: 10px; }
+      height: 13px;
+      fill: #20ADEE; }

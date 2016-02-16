@@ -91,31 +91,29 @@ class Bars {
         var svg = this.selector;
         svg.selectAll("*").remove();
 
-        var width, height, max;
+        var width, height, rectHeight, rectMargin, max;
         // width = d3.select(iElement[0])[0][0].offsetWidth - 5;
         width = 400;
-        height = size * 15;
-        // 12 = 10(bar height) + 2(margin between bars)
+        rectHeight = 13;
+        rectMargin = 2;
+        height = size * (rectHeight + rectMargin);
         max = Math.max(...data);
 
         svg.attr('height', height);
         
         //create the rectangles for the bar chart
-        var rects = svg.selectAll("rect")
-            .data(data);
+        var rects = svg.selectAll("rect").data(data);
         
         // svg.selectAll("rect")
         //     .data(data)
-        rects
-            .enter()
+        rects.enter()
             .append("rect")
-            .attr("fill", "#20ADEE")
-            .attr("height", 13)
+            .attr("class", 'bar')
             .attr("width", 0) // initial width of 0 for transition
             // .attr("x", 2) 
             .attr("y", function (d, i) {
-                return i * 15;
-            }) // height + margin between bars
+                return i * (rectHeight + rectMargin);
+            }) 
             // .transition()
             // .duration(500)
             .attr("width", function (d) {
@@ -143,10 +141,12 @@ C.setEvents();
 
 // var Bs = new Bars(C.size);
 var Bs = new Bars(20, '#bars');
+
+//sample data-binding
 setInterval(() => {
     console.log('update');
     var newData = shuffle(generateArray(20));
     // console.log(newData); 
     Bs.renderData(newData);
 }, 1000)
-// Bs.createBars();
+// // Bs.createBars();
