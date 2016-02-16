@@ -16,6 +16,9 @@ var Controller = function () {
 
         this.size = 20;
         this.speed = '1x';
+
+        this.createElements();
+        this.setEvents();
     }
 
     _createClass(Controller, [{
@@ -47,6 +50,11 @@ var Controller = function () {
                 $('#size a').removeClass('selected');
                 $(evt.target).addClass('selected');
             });
+        }
+    }, {
+        key: "getSize",
+        value: function getSize() {
+            return $('#size').find(".selected").text();
         }
     }]);
 
@@ -80,9 +88,10 @@ var Bars = function () {
         value: function renderData(data) {
             var _Math2;
 
-            // console.log('wtf2');
+            console.log('rendering. . .');
             this.bars = data;
             var size = this.size;
+            // console.log(data);
             // var data = this.bars;
 
             // var svg = this.selector.append("svg").attr('width', '100%');
@@ -92,10 +101,13 @@ var Bars = function () {
 
             var width, height, rectHeight, rectMargin, max;
             // width = d3.select(iElement[0])[0][0].offsetWidth - 5;
-            width = 400;
-            rectHeight = 13;
-            rectMargin = 2;
-            height = size * (rectHeight + rectMargin);
+            width = 450;
+            height = 450;
+            // rectHeight = 13;
+            rectMargin = 1;
+            // height = size * (rectHeight + rectMargin);
+            rectHeight = height / size - rectMargin;
+
             max = (_Math2 = Math).max.apply(_Math2, _toConsumableArray(data));
 
             svg.attr('height', height);
@@ -106,6 +118,8 @@ var Bars = function () {
             // svg.selectAll("rect")
             //     .data(data)
             rects.enter().append("rect").attr("class", 'bar').attr("width", 0) // initial width of 0 for transition
+            .attr("height", rectHeight)
+            // .attr("fill", getRandomColor())
             // .attr("x", 2)
             .attr("y", function (d, i) {
                 return i * (rectHeight + rectMargin);
@@ -121,7 +135,8 @@ var Bars = function () {
         }
     }, {
         key: "update",
-        value: function update(data) {
+        value: function update(size, data) {
+            this.size = size;
             this.bars = data;
         }
     }, {
@@ -132,30 +147,103 @@ var Bars = function () {
     return Bars;
 }();
 
-var GraphicalSort = function GraphicalSort() {
-    _classCallCheck(this, GraphicalSort);
+var GraphicalSort = function () {
+    function GraphicalSort() {
+        _classCallCheck(this, GraphicalSort);
 
-    //Controller
-    this.controller = new Controller();
-    var controls = this.controller;
-    controls.createElements();
-    controls.setEvents();
-    //Bars
-    this.bars = new Bars(controls.size, '#bars');
-    //Set default algorithms
-    // var sortMenu = {
-    //     "Bubble": bubbleSort,
-    //     "Selection": selectionSort,
-    //     "Shaker": shakerSort,
-    //     "Insertion": insertionSort,
-    //     "Shell": shellSort,
-    //     "Quick": quickSort,
-    //     "Merge": mergeSort,
-    //     "Heap": heapSort
-    // }
-};
+        //Controller
+        this.controller = new Controller();
+
+        //Bars
+        this.bars = new Bars(this.controller.size, '#bars');
+
+        // this.size = controls.size;
+        //Set default algorithms
+        // var sortMenu = {
+        //     "Bubble": bubbleSort,
+        //     "Selection": selectionSort,
+        //     "Shaker": shakerSort,
+        //     "Insertion": insertionSort,
+        //     "Shell": shellSort,
+        //     "Quick": quickSort,
+        //     "Merge": mergeSort,
+        //     "Heap": heapSort
+        // }
+
+        this.setEvents();
+    }
+
+    _createClass(GraphicalSort, [{
+        key: "setEvents",
+        value: function setEvents() {
+            var _this2 = this;
+
+            $('.controls__group').click(function () {
+                _this2.reload();
+            });
+
+            $('#reload').click(function () {
+                _this2.reload();
+            });
+
+            $('#start').click(function () {
+                _this2.start();
+            });
+        }
+    }, {
+        key: "reload",
+        value: function reload() {
+            console.log('reloading');
+            var newSize = this.controller.getSize();
+            var newData = generateData(newSize);
+            console.log(newData);
+            // console.log(newSize);
+            this.bars.update(newSize, newData);
+            this.bars.renderData(newData);
+        }
+    }, {
+        key: "start",
+        value: function start() {
+            console.log('starting');
+            bubbleSort(this.bars);
+        }
+    }]);
+
+    return GraphicalSort;
+}();
 
 var gs = new GraphicalSort();
+
+//Sample Sort
+
+function bubbleSort(barObj) {
+    var values = barObj.bars;
+    var done = false;
+    var counter = 0;
+    while (!done) {
+        done = true;
+        for (var i = 1; i < values.length; i++) {
+            if (values[i - 1] > values[i]) {
+                done = false;
+
+                // sleepFor(100);
+                // console.log(values);
+                // barObj.renderData(values);
+                var _ref = [values[i], values[i - 1]];
+                values[i - 1] = _ref[0];
+                values[i] = _ref[1];
+                (function () {
+                    setTimeout(function () {
+                        console.log(values);
+                        barObj.renderData(values);
+                    }, 1000 * counter++);
+                })();
+            }
+        }
+    }
+    // barObj.renderData(values);
+    console.log(values);
+}
 
 // var Bs = new Bars(C.size);
 // var Bs = new Bars(20, '#bars');

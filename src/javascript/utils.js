@@ -1,12 +1,15 @@
 //Helper
 
-
 function generateArray(size) {
     let arr = [];
     for(let i = 0; i < size; i++)
         arr.push(i + 1);
     
     return arr;    
+}
+
+function generateData(size) {
+    return shuffle(generateArray(size));   
 }
 
 function shuffle(arr) {
@@ -23,4 +26,18 @@ function shuffle(arr) {
   }
 
   return arr;
+}
+
+function sleepFor( sleepDuration ){
+    var now = new Date().getTime();
+    while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
+}
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
 }

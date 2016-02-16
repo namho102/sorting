@@ -11,12 +11,11 @@ body {
   font-family: 'Proxima Nova', 'Arial', 'Helvetica', sans-serif; }
 
 a {
-  text-decoration: none; }
+  text-decoration: none;
+  cursor: pointer; }
   a.option {
     border: 2px solid #111;
-    padding: 8px 10px;
-    margin-bottom: 10px;
-    cursor: pointer; }
+    padding: 6px 8px; }
     a.option:hover {
       border: 2px solid #FFF;
       color: #FFD700; }
@@ -47,17 +46,15 @@ ul li {
     float: left;
     width: 80px; }
   .controls__group {
-    margin-top: 30px;
+    margin-top: 20px;
     display: flex; }
   .controls__speed {
     margin-left: 50px; }
 
 .bars {
-  margin: 30px 20px;
-  width: 100%;
+  margin: 10px 20px 0 20px;
   display: flex; }
   .bars svg {
     width: 500px; }
     .bars svg rect {
-      height: 13px;
       fill: #20ADEE; }

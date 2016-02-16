@@ -17,6 +17,9 @@ class Controller {
     constructor() {
         this.size = 20;
         this.speed = '1x';
+
+        this.createElements();
+        this.setEvents();
     }
 
     createElements() {
@@ -55,6 +58,10 @@ class Controller {
             $(evt.target).addClass('selected');
         })
     }
+
+    getSize() {
+        return $('#size').find(".selected").text();
+    }
 }
 
 class Bars {
@@ -75,9 +82,10 @@ class Bars {
     }
 
     renderData(data) {
-        // console.log('wtf2');
+        console.log('rendering. . .');
         this.bars = data;
         var size = this.size;
+        // console.log(data);
         // var data = this.bars;
         
         // var svg = this.selector.append("svg").attr('width', '100%');
@@ -87,10 +95,13 @@ class Bars {
 
         var width, height, rectHeight, rectMargin, max;
         // width = d3.select(iElement[0])[0][0].offsetWidth - 5;
-        width = 400;
-        rectHeight = 13;
-        rectMargin = 2;
-        height = size * (rectHeight + rectMargin);
+        width = 450;
+        height = 450;
+        // rectHeight = 13;
+        rectMargin = 1;
+        // height = size * (rectHeight + rectMargin);
+        rectHeight = height / size - rectMargin;
+
         max = Math.max(...data);
 
         svg.attr('height', height);
@@ -104,6 +115,8 @@ class Bars {
             .append("rect")
             .attr("class", 'bar')
             .attr("width", 0) // initial width of 0 for transition
+            .attr("height", rectHeight)
+            // .attr("fill", getRandomColor())
         // .attr("x", 2) 
             .attr("y", function (d, i) {
                 return i * (rectHeight + rectMargin);
@@ -119,7 +132,8 @@ class Bars {
         // this.selector.selectAll().exit().remove(); 
     }
 
-    update(data) {
+    update(size, data) {
+        this.size = size;
         this.bars = data;
     }
 
@@ -132,11 +146,11 @@ class GraphicalSort {
     constructor() {
         //Controller
         this.controller = new Controller();
-        var controls = this.controller;
-        controls.createElements();
-        controls.setEvents();
+
         //Bars
-        this.bars = new Bars(controls.size, '#bars');
+        this.bars = new Bars(this.controller.size, '#bars');
+        
+        // this.size = controls.size;
         //Set default algorithms
         // var sortMenu = {
         //     "Bubble": bubbleSort,
@@ -148,12 +162,73 @@ class GraphicalSort {
         //     "Merge": mergeSort,
         //     "Heap": heapSort
         // }
+        
+        this.setEvents();
     }
 
+    setEvents() {
+        $('.controls__group').click(() => {
+            this.reload();
+        });
+        
+        $('#reload').click(() => {
+            this.reload();
+        });
+
+        $('#start').click(() => {
+            this.start();
+        });
+    }
+
+    reload() {
+        console.log('reloading');
+        var newSize = this.controller.getSize();
+        var newData = generateData(newSize);
+        console.log(newData);
+        // console.log(newSize);
+        this.bars.update(newSize, newData);
+        this.bars.renderData(newData);
+
+    }
+
+    start() {
+        console.log('starting');
+        bubbleSort(this.bars);
+    }
 
 }
 
 var gs = new GraphicalSort();
+
+//Sample Sort
+
+function bubbleSort(barObj) {
+    var values = barObj.bars;
+    var done = false;
+    var counter = 0;
+    while (!done) {
+        done = true;
+        for (var i = 1; i< values.length; i++) {
+            if (values[i-1] > values[i]) {
+                done = false;
+                [values[i-1], values[i]] = [values[i], values[i-1]];
+                // sleepFor(100);
+                // console.log(values);
+                // barObj.renderData(values);
+                (function () {
+                    setTimeout(() => {
+                        console.log(values);
+                        barObj.renderData(values);
+                    }, 1000 * counter++);
+                })();
+                
+            }
+        }
+    }
+    // barObj.renderData(values);
+    console.log(values);
+}
+
 
 
 // var Bs = new Bars(C.size);
