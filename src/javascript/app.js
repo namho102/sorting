@@ -64,22 +64,31 @@ class Bar {
 }
 
 class Bars {
-    constructor(size) {
+    constructor(size, root) {
         console.log('wtf');
         this.size = size;
+        this.root = root;
         this.bars = shuffle(generateArray(this.size));
-        console.log(this.bars);
-        
-        this.createBars();
+
+        //initial state
+        this.selector = d3.select(root).append("svg");
+        // this.selector.append("svg").attr('width', '100%');
+        this.renderData(this.bars);
     }
-
-    createBars() {
+    
+    getMax() {
+        return Math.max(...this.bars);
+    }
+    
+    renderData(data) {
         // console.log('wtf2');
-        
+        this.bars = data;
         var size = this.size;
-        var data = this.bars;
-
-        var svg = d3.select('#bars').append("svg").attr('width', '100%');
+        // var data = this.bars;
+        
+        // var svg = this.selector.append("svg").attr('width', '100%');
+        // var svg = d3.select('#bars').append("svg").attr('width', '100%');
+        var svg = this.selector;
         svg.selectAll("*").remove();
 
         var width, height, max;
@@ -87,30 +96,42 @@ class Bars {
         width = 400;
         height = size * 15;
         // 12 = 10(bar height) + 2(margin between bars)
-
         max = Math.max(...data);
 
         svg.attr('height', height);
-
+        
+        var rects = svg.selectAll("rect")
+            .data(data);
         //create the rectangles for the bar chart
-        svg.selectAll("rect")
-            .data(data)
+        // svg.selectAll("rect")
+        //     .data(data)
+        rects
             .enter()
             .append("rect")
             .attr("fill", "#20ADEE")
-            .attr("height", 13) 
+            .attr("height", 13)
             .attr("width", 0) // initial width of 0 for transition
-            // .attr("x", 2) 
+        // .attr("x", 2) 
             .attr("y", function (d, i) {
                 return i * 15;
             }) // height + margin between bars
-            .transition()
-            .duration(500)
+            // .transition()
+            // .duration(500)
             .attr("width", function (d) {
-                return d / (max / width);
+                return d / (max / width); // width based on scale
             })
+        ;
+        
+        rects.exit().remove();
+        // this.selector.selectAll().exit().remove(); 
+    }
 
-        ; // width based on scale
+    update(data) {
+        this.bars = data;
+    }
+
+    destroy() {
+
     }
 }
 
@@ -120,6 +141,11 @@ C.setEvents();
 
 
 // var Bs = new Bars(C.size);
-var Bs = new Bars(20);
-
+var Bs = new Bars(20, '#bars');
+setInterval(() => {
+    console.log('update');
+    var newData = shuffle(generateArray(20));
+    // console.log(newData); 
+    Bs.renderData(newData);
+}, 1000)
 // Bs.createBars();

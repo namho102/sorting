@@ -75,4 +75,11 @@ ul li {
 
 .bars {
     margin: 30px 20px;
+    
+    svg {
+        width: 50%;
+        rect {
+            height: 15px;
+        }
+    }
 }
