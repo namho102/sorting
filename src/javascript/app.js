@@ -15,31 +15,36 @@ const speed = ['1x', '2x', '3x'];
 
 class Controller {
     constructor() {
-        this.size = 10;
+        this.size = 20;
         this.speed = '1x';
     }
 
     createElements() {
         //MENU BUTTONSET
         algsList.forEach((el) => {
-            d3.select("#algs").append("li").append("a").attr('class', 'option').text(el);
+            d3.select("#algs").append("li").
+                append("a").
+                attr('class', 'option').
+                text(el);
         });
 
         size.forEach((el) => {
-            d3.select("#size").append("li").append("a").attr('class', 'option').text(el);
+            d3.select("#size").append("li").
+                append("a").
+                attr('class', 'option').
+                text(el);
         });
 
         speed.forEach((el) => {
-            d3.select("#speed").append("li").append("a").attr('class', 'option').text(el);
+            d3.select("#speed").
+                append("li").append("a").
+                attr('class', 'option').
+                text(el);
         });
-        //ACTION   
-    }
 
-    getSize() {
+        $("a:contains(" + this.size + ")").addClass('selected');
+        $("a:contains(" + this.speed + ")").addClass('selected');
 
-    }
-
-    getSpeed() {
 
     }
 
@@ -49,17 +54,6 @@ class Controller {
             $('#size a').removeClass('selected');
             $(evt.target).addClass('selected');
         })
-    }
-}
-
-
-class Bar {
-    constructor(value) {
-        this.value = value;
-    }
-
-    createBar() {
-
     }
 }
 
@@ -75,11 +69,11 @@ class Bars {
         // this.selector.append("svg").attr('width', '100%');
         this.renderData(this.bars);
     }
-    
+
     getMax() {
         return Math.max(...this.bars);
     }
-    
+
     renderData(data) {
         // console.log('wtf2');
         this.bars = data;
@@ -110,17 +104,17 @@ class Bars {
             .append("rect")
             .attr("class", 'bar')
             .attr("width", 0) // initial width of 0 for transition
-            // .attr("x", 2) 
+        // .attr("x", 2) 
             .attr("y", function (d, i) {
                 return i * (rectHeight + rectMargin);
             }) 
-            // .transition()
-            // .duration(500)
+        // .transition()
+        // .duration(500)
             .attr("width", function (d) {
                 return d / (max / width); // width based on scale
             })
         ;
-        
+
         rects.exit().remove();
         // this.selector.selectAll().exit().remove(); 
     }
@@ -134,19 +128,42 @@ class Bars {
     }
 }
 
-var C = new Controller();
-C.createElements();
-C.setEvents();
+class GraphicalSort {
+    constructor() {
+        //Controller
+        this.controller = new Controller();
+        var controls = this.controller;
+        controls.createElements();
+        controls.setEvents();
+        //Bars
+        this.bars = new Bars(controls.size, '#bars');
+        //Set default algorithms
+        // var sortMenu = {
+        //     "Bubble": bubbleSort,
+        //     "Selection": selectionSort,
+        //     "Shaker": shakerSort,
+        //     "Insertion": insertionSort,
+        //     "Shell": shellSort,
+        //     "Quick": quickSort,
+        //     "Merge": mergeSort,
+        //     "Heap": heapSort
+        // }
+    }
+
+
+}
+
+var gs = new GraphicalSort();
 
 
 // var Bs = new Bars(C.size);
-var Bs = new Bars(20, '#bars');
-
+// var Bs = new Bars(20, '#bars');
+// var Bs2 = new Bars(20, '#bars2');
 //sample data-binding
-setInterval(() => {
-    console.log('update');
-    var newData = shuffle(generateArray(20));
-    // console.log(newData); 
-    Bs.renderData(newData);
-}, 1000)
-// // Bs.createBars();
+// setInterval(() => {
+//     console.log('update');
+//     var newData = shuffle(generateArray(20));
+//     // console.log(newData); 
+//     Bs.renderData(newData);
+// }, 1000)
+// // // Bs.createBars();

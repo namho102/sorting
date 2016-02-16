@@ -47,15 +47,17 @@ ul li {
     float: left;
     width: 80px; }
   .controls__group {
-    margin-top: 20px;
+    margin-top: 30px;
     display: flex; }
   .controls__speed {
     margin-left: 50px; }
 
 .bars {
-  margin: 30px 20px; }
+  margin: 30px 20px;
+  width: 100%;
+  display: flex; }
   .bars svg {
-    width: 50%; }
+    width: 500px; }
     .bars svg rect {
       height: 13px;
       fill: #20ADEE; }

@@ -64,7 +64,7 @@ ul li {
     }
     
     &__group {
-        margin-top: 20px;
+        margin-top: 30px;
         display: flex;
     }
     
@@ -75,9 +75,11 @@ ul li {
 
 .bars {
     margin: 30px 20px;
-    
+    width: 100%;
+    display: flex;
     svg {
-        width: 50%;
+        // width: 100%;
+        width: 500px;
         rect {
             height: 13px;
             fill: #20ADEE;

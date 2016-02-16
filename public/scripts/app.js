@@ -14,7 +14,7 @@ var Controller = function () {
     function Controller() {
         _classCallCheck(this, Controller);
 
-        this.size = 10;
+        this.size = 20;
         this.speed = '1x';
     }
 
@@ -33,14 +33,10 @@ var Controller = function () {
             speed.forEach(function (el) {
                 d3.select("#speed").append("li").append("a").attr('class', 'option').text(el);
             });
-            //ACTION 
+
+            $("a:contains(" + this.size + ")").addClass('selected');
+            $("a:contains(" + this.speed + ")").addClass('selected');
         }
-    }, {
-        key: "getSize",
-        value: function getSize() {}
-    }, {
-        key: "getSpeed",
-        value: function getSpeed() {}
     }, {
         key: "setEvents",
         value: function setEvents() {
@@ -55,21 +51,6 @@ var Controller = function () {
     }]);
 
     return Controller;
-}();
-
-var Bar = function () {
-    function Bar(value) {
-        _classCallCheck(this, Bar);
-
-        this.value = value;
-    }
-
-    _createClass(Bar, [{
-        key: "createBar",
-        value: function createBar() {}
-    }]);
-
-    return Bar;
 }();
 
 var Bars = function () {
@@ -151,18 +132,39 @@ var Bars = function () {
     return Bars;
 }();
 
-var C = new Controller();
-C.createElements();
-C.setEvents();
+var GraphicalSort = function GraphicalSort() {
+    _classCallCheck(this, GraphicalSort);
+
+    //Controller
+    this.controller = new Controller();
+    var controls = this.controller;
+    controls.createElements();
+    controls.setEvents();
+    //Bars
+    this.bars = new Bars(controls.size, '#bars');
+    //Set default algorithms
+    // var sortMenu = {
+    //     "Bubble": bubbleSort,
+    //     "Selection": selectionSort,
+    //     "Shaker": shakerSort,
+    //     "Insertion": insertionSort,
+    //     "Shell": shellSort,
+    //     "Quick": quickSort,
+    //     "Merge": mergeSort,
+    //     "Heap": heapSort
+    // }
+};
+
+var gs = new GraphicalSort();
 
 // var Bs = new Bars(C.size);
-var Bs = new Bars(20, '#bars');
-
+// var Bs = new Bars(20, '#bars');
+// var Bs2 = new Bars(20, '#bars2');
 //sample data-binding
-setInterval(function () {
-    console.log('update');
-    var newData = shuffle(generateArray(20));
-    // console.log(newData);
-    Bs.renderData(newData);
-}, 1000);
-// // Bs.createBars();
+// setInterval(() => {
+//     console.log('update');
+//     var newData = shuffle(generateArray(20));
+//     // console.log(newData);
+//     Bs.renderData(newData);
+// }, 1000)
+// // // Bs.createBars();
