@@ -7,7 +7,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var algsList = ["Bubble", "Selection", "Shaker", "Insertion", "Shell", "Quick", "Merge", "Heap", "Bogo"];
-var size = [5, 10, 20, 30, 70, 100];
+var size = [5, 10, 20, 30, 50, 70, 100];
 var speed = ['1x', '2x', '3x'];
 
 var Controller = function () {
@@ -221,6 +221,7 @@ var Task = function () {
 
         this.bars = bars;
         this.tasks = [];
+        this.delay = 50;
     }
 
     _createClass(Task, [{
@@ -229,16 +230,16 @@ var Task = function () {
             delay = delay || this.delay;
             var bars = this.bars;
             var queue = this.tasks;
-            function processNextBatch() {
-                console.log(delay);
-                var nextItem;
+            var self = this;
 
+            function processNextBatch() {
+                var nextItem;
                 nextItem = queue.shift();
                 if (!nextItem) return;
                 // console.log(nextItem);
                 bars.renderData(nextItem);
                 // processItem(nextItem);
-                setTimeout(processNextBatch, 50);
+                setTimeout(processNextBatch, self.delay);
                 // setTimeout(processNextBatch, delay);
             }
             processNextBatch();
@@ -246,7 +247,6 @@ var Task = function () {
     }, {
         key: "pushValues",
         value: function pushValues(values) {
-            // console.log(this.tasks)
             this.tasks.push(values);
         }
     }, {
@@ -261,11 +261,11 @@ var Task = function () {
 
 //Sample Sort
 
+
 function bubbleSort(barObj, taskObj) {
     var values = barObj.bars;
 
     var done = false;
-    // var counter = 0;
     while (!done) {
         done = true;
         for (var i = 1; i < values.length; i++) {
@@ -275,23 +275,13 @@ function bubbleSort(barObj, taskObj) {
                 values[i - 1] = _ref[0];
                 values[i] = _ref[1];
 
-                var tempVar = values.slice(0);
+                var tempVar = values.slice(0); //creating not copying, !IMPORTANT !FUCKING ERROR
                 taskObj.pushValues(tempVar);
-                // console.log(values);
-                // sleepFor(100);
-                // console.log(values);
-                // barObj.renderData(values);
-                // (function () {
-                //     setTimeout(() => {
-                //         console.log(values);
-                //         barObj.renderData(values);
-                //     }, 1000 * counter++);
-                // })();
             }
         }
     }
-    console.log(taskObj.tasks);
-    // barObj.renderData(values);
+    // console.log(taskObj.tasks);
+
     taskObj.processItems();
     console.log(values);
 }

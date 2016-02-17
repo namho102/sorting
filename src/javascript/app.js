@@ -10,7 +10,7 @@ const algsList = [
     "Heap",
     "Bogo"
 ];
-const size = [5, 10, 20, 30, 70, 100];
+const size = [5, 10, 20, 30, 50, 70, 100];
 const speed = ['1x', '2x', '3x'];
 
 class Controller {
@@ -205,30 +205,29 @@ class Task {
     constructor(bars) {
         this.bars = bars;
         this.tasks = [];
+        this.delay = 50;
     }
     
     processItems(delay) {
         delay = delay || this.delay;
         var bars = this.bars;
         var queue = this.tasks;
+        var self = this;
+        
         function processNextBatch() {
-            console.log(delay);
             var nextItem;
-
             nextItem = queue.shift();
             if (!nextItem) return;
             // console.log(nextItem);
             bars.renderData(nextItem);
             // processItem(nextItem);
-            setTimeout(processNextBatch, 50);
+            setTimeout(processNextBatch, self.delay);
             // setTimeout(processNextBatch, delay);
         }
         processNextBatch();
     }
     
-
     pushValues(values) {
-        // console.log(this.tasks)
         this.tasks.push(values);
     }
 
@@ -239,36 +238,23 @@ class Task {
 }
 
 //Sample Sort
-
 function bubbleSort(barObj, taskObj) {
     var values = barObj.bars;
     
     var done = false;
-    // var counter = 0;
     while (!done) {
         done = true;
         for (var i = 1; i < values.length; i++) {
             if (values[i - 1] > values[i]) {
                 done = false;
                 [values[i - 1], values[i]] = [values[i], values[i - 1]];
-                var tempVar = values.slice(0);
+                var tempVar = values.slice(0); //creating not copying, !IMPORTANT !FUCKING ERROR
                 taskObj.pushValues(tempVar);
-                // console.log(values);
-                // sleepFor(100);
-                // console.log(values);
-                // barObj.renderData(values);
-                // (function () {
-                //     setTimeout(() => {
-                //         console.log(values);
-                //         barObj.renderData(values);
-                //     }, 1000 * counter++);
-                // })();
-
             }
         }
     }
-    console.log(taskObj.tasks);
-    // barObj.renderData(values);
+    // console.log(taskObj.tasks);
+
     taskObj.processItems();
     console.log(values);
 }
