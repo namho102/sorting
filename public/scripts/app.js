@@ -157,6 +157,8 @@ var GraphicalSort = function () {
         //Bars
         this.bars = new Bars(this.controller.size, '#bars');
 
+        //Tasks
+        this.tasks = new Task(this.bars);
         // this.size = controls.size;
         //Set default algorithms
         // var sortMenu = {
@@ -205,45 +207,96 @@ var GraphicalSort = function () {
         key: "start",
         value: function start() {
             console.log('starting');
-            bubbleSort(this.bars);
+            this.tasks.clean();
+            bubbleSort(this.bars, this.tasks);
         }
     }]);
 
     return GraphicalSort;
 }();
 
-var gs = new GraphicalSort();
+var Task = function () {
+    function Task(bars) {
+        _classCallCheck(this, Task);
+
+        this.bars = bars;
+        this.tasks = [];
+    }
+
+    _createClass(Task, [{
+        key: "processItems",
+        value: function processItems(delay) {
+            delay = delay || this.delay;
+            var bars = this.bars;
+            var queue = this.tasks;
+            function processNextBatch() {
+                console.log(delay);
+                var nextItem;
+
+                nextItem = queue.shift();
+                if (!nextItem) return;
+                // console.log(nextItem);
+                bars.renderData(nextItem);
+                // processItem(nextItem);
+                setTimeout(processNextBatch, 50);
+                // setTimeout(processNextBatch, delay);
+            }
+            processNextBatch();
+        }
+    }, {
+        key: "pushValues",
+        value: function pushValues(values) {
+            // console.log(this.tasks)
+            this.tasks.push(values);
+        }
+    }, {
+        key: "clean",
+        value: function clean() {
+            this.tasks = [];
+        }
+    }]);
+
+    return Task;
+}();
 
 //Sample Sort
 
-function bubbleSort(barObj) {
+function bubbleSort(barObj, taskObj) {
     var values = barObj.bars;
+
     var done = false;
-    var counter = 0;
+    // var counter = 0;
     while (!done) {
         done = true;
         for (var i = 1; i < values.length; i++) {
             if (values[i - 1] > values[i]) {
                 done = false;
-
-                // sleepFor(100);
-                // console.log(values);
-                // barObj.renderData(values);
                 var _ref = [values[i], values[i - 1]];
                 values[i - 1] = _ref[0];
                 values[i] = _ref[1];
-                (function () {
-                    setTimeout(function () {
-                        console.log(values);
-                        barObj.renderData(values);
-                    }, 1000 * counter++);
-                })();
+
+                var tempVar = values.slice(0);
+                taskObj.pushValues(tempVar);
+                // console.log(values);
+                // sleepFor(100);
+                // console.log(values);
+                // barObj.renderData(values);
+                // (function () {
+                //     setTimeout(() => {
+                //         console.log(values);
+                //         barObj.renderData(values);
+                //     }, 1000 * counter++);
+                // })();
             }
         }
     }
+    console.log(taskObj.tasks);
     // barObj.renderData(values);
+    taskObj.processItems();
     console.log(values);
 }
+
+var gs = new GraphicalSort();
 
 // var Bs = new Bars(C.size);
 // var Bs = new Bars(20, '#bars');

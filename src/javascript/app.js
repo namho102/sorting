@@ -116,7 +116,7 @@ class Bars {
             .attr("class", 'bar')
             .attr("width", 0) // initial width of 0 for transition
             .attr("height", rectHeight)
-            // .attr("fill", getRandomColor())
+        // .attr("fill", getRandomColor())
         // .attr("x", 2) 
             .attr("y", function (d, i) {
                 return i * (rectHeight + rectMargin);
@@ -150,6 +150,8 @@ class GraphicalSort {
         //Bars
         this.bars = new Bars(this.controller.size, '#bars');
         
+        //Tasks
+        this.tasks = new Task(this.bars);
         // this.size = controls.size;
         //Set default algorithms
         // var sortMenu = {
@@ -170,7 +172,7 @@ class GraphicalSort {
         $('.controls__group').click(() => {
             this.reload();
         });
-        
+
         $('#reload').click(() => {
             this.reload();
         });
@@ -193,43 +195,85 @@ class GraphicalSort {
 
     start() {
         console.log('starting');
-        bubbleSort(this.bars);
+        this.tasks.clean();
+        bubbleSort(this.bars, this.tasks);
     }
 
 }
 
-var gs = new GraphicalSort();
+class Task {
+    constructor(bars) {
+        this.bars = bars;
+        this.tasks = [];
+    }
+    
+    processItems(delay) {
+        delay = delay || this.delay;
+        var bars = this.bars;
+        var queue = this.tasks;
+        function processNextBatch() {
+            console.log(delay);
+            var nextItem;
+
+            nextItem = queue.shift();
+            if (!nextItem) return;
+            // console.log(nextItem);
+            bars.renderData(nextItem);
+            // processItem(nextItem);
+            setTimeout(processNextBatch, 50);
+            // setTimeout(processNextBatch, delay);
+        }
+        processNextBatch();
+    }
+    
+
+    pushValues(values) {
+        // console.log(this.tasks)
+        this.tasks.push(values);
+    }
+
+    clean() {
+        this.tasks = [];
+    }
+
+}
 
 //Sample Sort
 
-function bubbleSort(barObj) {
+function bubbleSort(barObj, taskObj) {
     var values = barObj.bars;
+    
     var done = false;
-    var counter = 0;
+    // var counter = 0;
     while (!done) {
         done = true;
-        for (var i = 1; i< values.length; i++) {
-            if (values[i-1] > values[i]) {
+        for (var i = 1; i < values.length; i++) {
+            if (values[i - 1] > values[i]) {
                 done = false;
-                [values[i-1], values[i]] = [values[i], values[i-1]];
+                [values[i - 1], values[i]] = [values[i], values[i - 1]];
+                var tempVar = values.slice(0);
+                taskObj.pushValues(tempVar);
+                // console.log(values);
                 // sleepFor(100);
                 // console.log(values);
                 // barObj.renderData(values);
-                (function () {
-                    setTimeout(() => {
-                        console.log(values);
-                        barObj.renderData(values);
-                    }, 1000 * counter++);
-                })();
-                
+                // (function () {
+                //     setTimeout(() => {
+                //         console.log(values);
+                //         barObj.renderData(values);
+                //     }, 1000 * counter++);
+                // })();
+
             }
         }
     }
+    console.log(taskObj.tasks);
     // barObj.renderData(values);
+    taskObj.processItems();
     console.log(values);
 }
 
-
+var gs = new GraphicalSort();
 
 // var Bs = new Bars(C.size);
 // var Bs = new Bars(20, '#bars');
