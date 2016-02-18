@@ -209,7 +209,7 @@ class Task {
     constructor(bars) {
         this.bars = bars;
         this.tasks = [];
-        this.delay = 50;
+        this.delay = 40;
     }
 
     processItems(delay) {
@@ -246,13 +246,12 @@ class Task {
 //Sample Sort
 function bubbleSort(barObj, taskObj) {
     var values = barObj.bars;
-    var counter = 0;
+    
     //main
     var done = false;
     while (!done) {
         done = true;
         for (var i = 1; i < values.length; i++) {
-            counter++;
             taskObj.pushValues(values);
 
             if (values[i - 1] > values[i]) {
@@ -270,31 +269,24 @@ function bubbleSort(barObj, taskObj) {
         }
     }
     //end main
+    
     taskObj.pushValues(values);
-            
-    console.log('count ', counter);
     console.log(taskObj.tasks.length);
     taskObj.processItems();
     console.log(values);
 }
 
-
-function insertionSort() {
-    console.log('insertion sort starting');
-}
-
 function selectionSort(barObj, taskObj) {
     console.log('selection sort starting');
     var values = barObj.bars;
-    var counter = 0;
+
     //main
     var minIndex, tmp;
     for (var i = 0; i < values.length - 1; i++) {
         minIndex = i;
         for (var j = i + 1; j < values.length; j++) {
             taskObj.pushValues(values);
-            
-            counter++;
+
             if (values[j] < values[minIndex]) {
                 minIndex = j;
                 
@@ -310,9 +302,30 @@ function selectionSort(barObj, taskObj) {
         }
     }
     //end main
-    taskObj.pushValues(values);
+    
+    taskObj.pushValues(values);            
+    console.log(taskObj.tasks.length);
+    taskObj.processItems();
+    console.log(values);
+}
+
+function insertionSort(barObj, taskObj) {
+    console.log('insertion sort starting');
+    var values = barObj.bars;
+    
+    //main
+    for (var i = 0; i < values.length; i++) {
+        var k = values[i];
+        for (var j = i; j > 0 && k < values[j - 1]; j--) {
+            taskObj.pushValues(values);
+            values[j] = values[j - 1];
+        }
             
-    console.log('count ', counter);
+        values[j] = k;
+    }
+    //end main
+    
+    taskObj.pushValues(values);
     console.log(taskObj.tasks.length);
     taskObj.processItems();
     console.log(values);
