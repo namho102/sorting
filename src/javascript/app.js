@@ -82,6 +82,7 @@ class Bars {
 
     renderData(data) {
         console.log('rendering. . .');
+        console.log(data);
         this.bars = data;
         var size = this.size;
         // console.log(data);
@@ -385,8 +386,50 @@ function quickSort(barObj, taskObj) {
 
 }
 
-function mergeSort() {
+function mergeSort(barObj, taskObj) {
     console.log('merge sort starting');
+    var values = barObj.bars;
+    
+    //main
+    function merge(left, right, arr) {
+        console.log(left, right, arr);
+        var a = 0;
+
+        while (left.length && right.length) {
+            // taskObj.pushValues(arr);
+            arr[a++] = (right[0] < left[0]) ? right.shift() : left.shift();
+        }
+        while (left.length) {
+            // taskObj.pushValues(arr);
+            arr[a++] = left.shift();
+        }
+        while (right.length) {
+            // taskObj.pushValues(arr);
+            arr[a++] = right.shift();
+        }
+    }
+
+    function _mergeSort(arr, tmp, len) {
+        taskObj.pushValues(arr);
+        if (len === 1) { return; }
+
+        var m = Math.floor(len / 2),
+            tmp_l = tmp.slice(0, m),
+            tmp_r = tmp.slice(m);
+
+        _mergeSort(tmp_l, arr.slice(0, m), m);
+        _mergeSort(tmp_r, arr.slice(m), len - m);
+        merge(tmp_l, tmp_r, arr);
+    }
+
+    _mergeSort(values, values.slice(), values.length);
+    //end main
+    
+    // console.log(count);
+    taskObj.pushValues(values);
+    console.log(taskObj.tasks.length);
+    taskObj.processItems();
+    console.log(values);
 }
 
 function heapSort() {
