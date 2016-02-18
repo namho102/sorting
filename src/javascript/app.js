@@ -177,6 +177,8 @@ class GraphicalSort {
             // console.log(this.algs);
             $('#algs a').removeClass('selected');
             $(evt.target).addClass('selected');
+
+            this.reload();
         });
     }
 
@@ -289,11 +291,11 @@ function selectionSort(barObj, taskObj) {
 
             if (values[j] < values[minIndex]) {
                 minIndex = j;
-                
+
             }
             // taskObj.pushValues(values);    
         }
-            
+
         if (minIndex != i) {
             tmp = values[i];
             values[i] = values[minIndex];
@@ -303,7 +305,7 @@ function selectionSort(barObj, taskObj) {
     }
     //end main
     
-    taskObj.pushValues(values);            
+    taskObj.pushValues(values);
     console.log(taskObj.tasks.length);
     taskObj.processItems();
     console.log(values);
@@ -320,7 +322,7 @@ function insertionSort(barObj, taskObj) {
             taskObj.pushValues(values);
             values[j] = values[j - 1];
         }
-            
+
         values[j] = k;
     }
     //end main
@@ -331,8 +333,56 @@ function insertionSort(barObj, taskObj) {
     console.log(values);
 }
 
-function quickSort() {
+function quickSort(barObj, taskObj) {
     console.log('quick sort starting');
+    var values = barObj.bars;
+    // var count = 0;
+    //main
+    function _quickSort(left, right) {
+        // count++;
+        taskObj.pushValues(values);
+        if (left < right) {
+            var pivot = values[left + Math.floor((right - right) / 2)],
+                left_new = left,
+                right_new = right;
+
+            do {
+                // count++;
+                taskObj.pushValues(values);
+                while (values[left_new] < pivot) {
+                    // count++;
+                    taskObj.pushValues(values);
+                    left_new += 1;
+                }
+                while (pivot < values[right_new]) {
+                    // count++;
+                    taskObj.pushValues(values);
+                    right_new -= 1;
+                }
+                if (left_new <= right_new) {
+                    [values[left_new], values[right_new]] = [values[right_new], values[left_new]];
+                    // swap(left_new, right_new);
+                    left_new += 1;
+                    right_new -= 1;
+                }
+            } while (left_new <= right_new);
+
+            _quickSort(left, right_new);
+            _quickSort(left_new, right);
+
+        }
+    }
+
+    _quickSort(0, values.length - 1);
+    
+    //end main
+    
+    // console.log(count);
+    taskObj.pushValues(values);
+    console.log(taskObj.tasks.length);
+    taskObj.processItems();
+    console.log(values);
+
 }
 
 function mergeSort() {
