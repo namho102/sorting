@@ -6,7 +6,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var algsList = ["Bubble", "Selection", "Shaker", "Insertion", "Shell", "Quick", "Merge", "Heap", "Bogo"];
+var algsList = ["Bubble", "Selection", "Insertion", "Quick", "Merge", "Heap"];
 var size = [5, 10, 20, 30, 50, 70, 100];
 var speed = ['1x', '2x', '3x'];
 
@@ -25,8 +25,8 @@ var Controller = function () {
         key: "createElements",
         value: function createElements() {
             //MENU BUTTONSET
-            algsList.forEach(function (el) {
-                d3.select("#algs").append("li").append("a").attr('class', 'option').text(el);
+            algsList.forEach(function (el, i) {
+                d3.select("#algs").append("li").append("a").attr('data-pos', i).attr('class', 'option').text(el);
             });
 
             size.forEach(function (el) {
@@ -39,6 +39,7 @@ var Controller = function () {
 
             $("a:contains(" + this.size + ")").addClass('selected');
             $("a:contains(" + this.speed + ")").addClass('selected');
+            $("#algs").find('a').first().addClass('selected');
         }
     }, {
         key: "setEvents",
@@ -160,17 +161,9 @@ var GraphicalSort = function () {
         //Tasks
         this.tasks = new Task(this.bars);
         // this.size = controls.size;
-        //Set default algorithms
-        // var sortMenu = {
-        //     "Bubble": bubbleSort,
-        //     "Selection": selectionSort,
-        //     "Shaker": shakerSort,
-        //     "Insertion": insertionSort,
-        //     "Shell": shellSort,
-        //     "Quick": quickSort,
-        //     "Merge": mergeSort,
-        //     "Heap": heapSort
-        // }
+        // Set default algorithms
+        this.sortMenu = [bubbleSort, selectionSort, insertionSort, quickSort, mergeSort, heapSort];
+        this.pos = 0;
 
         this.setEvents();
     }
@@ -191,6 +184,18 @@ var GraphicalSort = function () {
             $('#start').click(function () {
                 _this2.start();
             });
+
+            $('#algs a').click(function (evt) {
+                _this2.algs = $(evt.target).data('pos');
+                // console.log(this.algs);
+                $('#algs a').removeClass('selected');
+                $(evt.target).addClass('selected');
+            });
+        }
+    }, {
+        key: "getPos",
+        value: function getPos() {
+            return $('#algs').find(".selected").data('pos');
         }
     }, {
         key: "reload",
@@ -208,7 +213,9 @@ var GraphicalSort = function () {
         value: function start() {
             console.log('starting');
             this.tasks.clean();
-            bubbleSort(this.bars, this.tasks);
+            // console.log(this.getPos());
+            // bubbleSort(this.bars, this.tasks);
+            this.sortMenu[this.getPos()](this.bars, this.tasks);
         }
     }]);
 
@@ -247,7 +254,9 @@ var Task = function () {
     }, {
         key: "pushValues",
         value: function pushValues(values) {
-            this.tasks.push(values);
+            var tempVar = values.slice(0); //creating not copying, !IMPORTANT !FUCKING ERROR
+            this.tasks.push(tempVar);
+            // console.log(this.tasks);
         }
     }, {
         key: "clean",
@@ -264,26 +273,86 @@ var Task = function () {
 
 function bubbleSort(barObj, taskObj) {
     var values = barObj.bars;
-
+    var counter = 0;
+    //main
     var done = false;
     while (!done) {
         done = true;
         for (var i = 1; i < values.length; i++) {
+            counter++;
+            taskObj.pushValues(values);
+
             if (values[i - 1] > values[i]) {
                 done = false;
+                // [values[i - 1], values[i]] = [values[i], values[i - 1]];
                 var _ref = [values[i], values[i - 1]];
                 values[i - 1] = _ref[0];
+                // var tempValues = values.slice(0);
+
                 values[i] = _ref[1];
 
-                var tempVar = values.slice(0); //creating not copying, !IMPORTANT !FUCKING ERROR
-                taskObj.pushValues(tempVar);
+                // taskObj.pushValues(tempValues);
+                // taskObj.pushValues(values);
             }
         }
     }
-    // console.log(taskObj.tasks);
+    //end main
+    taskObj.pushValues(values);
 
+    console.log('count ', counter);
+    console.log(taskObj.tasks.length);
     taskObj.processItems();
     console.log(values);
+}
+
+function insertionSort() {
+    console.log('insertion sort starting');
+}
+
+function selectionSort(barObj, taskObj) {
+    console.log('selection sort starting');
+    var values = barObj.bars;
+    var counter = 0;
+    //main
+    var minIndex, tmp;
+    for (var i = 0; i < values.length - 1; i++) {
+        minIndex = i;
+        for (var j = i + 1; j < values.length; j++) {
+            taskObj.pushValues(values);
+
+            counter++;
+            if (values[j] < values[minIndex]) {
+                minIndex = j;
+            }
+            // taskObj.pushValues(values);  
+        }
+
+        if (minIndex != i) {
+            tmp = values[i];
+            values[i] = values[minIndex];
+            values[minIndex] = tmp;
+            // taskObj.pushValues(values);
+        }
+    }
+    //end main
+    taskObj.pushValues(values);
+
+    console.log('count ', counter);
+    console.log(taskObj.tasks.length);
+    taskObj.processItems();
+    console.log(values);
+}
+
+function quickSort() {
+    console.log('quick sort starting');
+}
+
+function mergeSort() {
+    console.log('merge sort starting');
+}
+
+function heapSort() {
+    console.log('heap sort starting');
 }
 
 var gs = new GraphicalSort();
