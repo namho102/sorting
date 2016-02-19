@@ -335,32 +335,29 @@ function insertionSort(barObj, taskObj) {
 function quickSort(barObj, taskObj) {
 	console.log('quick sort starting');
 	var values = barObj.bars;
-	// var count = 0;
+
 	//main
 	function _quickSort(left, right) {
-		// count++;
 		taskObj.pushValues(values);
+
 		if (left < right) {
 			var pivot = values[left + Math.floor((right - right) / 2)],
 				left_new = left,
 				right_new = right;
 
 			do {
-				// count++;
 				taskObj.pushValues(values);
+				
 				while (values[left_new] < pivot) {
-					// count++;
 					taskObj.pushValues(values);
 					left_new += 1;
 				}
 				while (pivot < values[right_new]) {
-					// count++;
 					taskObj.pushValues(values);
 					right_new -= 1;
 				}
 				if (left_new <= right_new) {
 					[values[left_new], values[right_new]] = [values[right_new], values[left_new]];
-					// swap(left_new, right_new);
 					left_new += 1;
 					right_new -= 1;
 				}
@@ -389,7 +386,7 @@ function mergeSort(barObj, taskObj) {
 	var values = barObj.bars;
 
 	//main
-	
+
 	function _mergeSort(alist) {
 		// console.log("Splitting ", alist);
 		// console.log(alist);
@@ -435,56 +432,53 @@ function mergeSort(barObj, taskObj) {
 				k = k + 1;
 			}
 		}
-
-
-
 		// console.log("Merging ", alist);
 	}
-	
+
 	//end main
 
 	//test
 
-/*	function _mergeSort(array, first, last) {
-		// var array = values;
-		// console.log(array);
-		taskObj.pushValues(values);
-
-		first = (first === undefined) ? 0 : first;
-		last = (last === undefined) ? array.length - 1 : last;
-		if (last - first < 1) {
-			return
-		}
-		var middle = Math.floor((first + last) / 2);
-		_mergeSort(array, first, middle);
-		_mergeSort(array, middle + 1, last);
-
-
-		var f = first;
-		var m = middle;
-
-		while (f <= m && m + 1 <= last) {
+	/*	function _mergeSort(array, first, last) {
+			// var array = values;
+			// console.log(array);
 			taskObj.pushValues(values);
-			if (array[f] >= array[m + 1]) {
-				// array.insertBefore(m + 1, f);
 
-				var from = m + 1, to = f;
-				// var temp = array[from];
-				array.insert(array[from], to)
-				// for (var i = array.length - 1; to <= i; i--) {
-				// 	// taskObj.pushValues(values);
-				// 	array[i + 1] = array[i];
-				// }
-				// array[to] = temp;
-				if (to < from) {
-					array.splice(from + 1, 1);
-				}
-
-				m++;
+			first = (first === undefined) ? 0 : first;
+			last = (last === undefined) ? array.length - 1 : last;
+			if (last - first < 1) {
+				return
 			}
-			f++;
-		}
-	}*/
+			var middle = Math.floor((first + last) / 2);
+			_mergeSort(array, first, middle);
+			_mergeSort(array, middle + 1, last);
+
+
+			var f = first;
+			var m = middle;
+
+			while (f <= m && m + 1 <= last) {
+				taskObj.pushValues(values);
+				if (array[f] >= array[m + 1]) {
+					// array.insertBefore(m + 1, f);
+
+					var from = m + 1, to = f;
+					// var temp = array[from];
+					array.insert(array[from], to)
+					// for (var i = array.length - 1; to <= i; i--) {
+					// 	// taskObj.pushValues(values);
+					// 	array[i + 1] = array[i];
+					// }
+					// array[to] = temp;
+					if (to < from) {
+						array.splice(from + 1, 1);
+					}
+
+					m++;
+				}
+				f++;
+			}
+		}*/
 
 
 	_mergeSort(values);
@@ -498,8 +492,58 @@ function mergeSort(barObj, taskObj) {
 	console.log(values);
 }
 
-function heapSort() {
+function heapSort(barObj, taskObj) {
 	console.log('heap sort starting');
+	var values = barObj.bars;
+
+	//main
+
+	function _heapSort(arr) {
+		putArrayInHeapOrder(arr);
+		var end = arr.length - 1;
+		while (end > 0) {
+			taskObj.pushValues(values);
+			[arr[0], arr[end]] = [arr[end], arr[0]]; 
+			siftElementDownHeap(arr, 0, end);
+			end -= 1
+		}
+	}
+
+	function putArrayInHeapOrder(arr) {
+		var i;
+		i = arr.length / 2 - 1;
+		i = Math.floor(i);
+		while (i >= 0) {
+			taskObj.pushValues(values);
+			siftElementDownHeap(arr, i, arr.length);
+			i -= 1;
+		}
+	}
+
+	function siftElementDownHeap(heap, i, max) {
+		var i_big, c1, c2;
+		while (i < max) {
+			taskObj.pushValues(values);
+			i_big = i;
+			c1 = 2 * i + 1;
+			c2 = c1 + 1;
+			if (c1 < max && heap[c1] > heap[i_big])
+				i_big = c1;
+			if (c2 < max && heap[c2] > heap[i_big])
+				i_big = c2;
+			if (i_big == i) return;
+			[heap[i], heap[i_big]] = [heap[i_big], heap[i]];
+			i = i_big;
+		}
+	}
+
+	_heapSort(values);
+	//end main
+
+	taskObj.pushValues(values);
+	console.log(taskObj.tasks.length);
+	taskObj.processItems();
+	console.log(values);
 }
 
 var gs = new GraphicalSort();
