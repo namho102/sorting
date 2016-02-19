@@ -417,84 +417,98 @@ function mergeSort(barObj, taskObj) {
 	var values = barObj.bars;
 
 	//main
-	/*    function merge(left, right, arr) {
-         // console.log(arr);
-         console.log(left, right, arr);
-         var a = 0;
- 
-         while (left.length && right.length) {
-             // taskObj.pushValues(arr);
-             arr[a++] = (right[0] < left[0]) ? right.shift() : left.shift();
-         }
-         while (left.length) {
-             // taskObj.pushValues(arr);
-             arr[a++] = left.shift();
-         }
-         while (right.length) {
-             // taskObj.pushValues(arr);
-             arr[a++] = right.shift();
-         }
-     }
- 
-     function _mergeSort(arr, tmp, len) {
-         // console.log(arr, tmp);
-         taskObj.pushValues(arr);
-         if (len === 1) { return; }
- 
-         var m = Math.floor(len / 2),
-             tmp_l = tmp.slice(0, m),
-             tmp_r = tmp.slice(m);
- 
-         _mergeSort(tmp_l, arr.slice(0, m), m);
-         _mergeSort(tmp_r, arr.slice(m), len - m);
-         merge(tmp_l, tmp_r, arr);
-     }
- 
-     _mergeSort(values, values.slice(), values.length);*/
+
+	function _mergeSort(alist) {
+		// console.log("Splitting ", alist);
+		// console.log(alist);
+		taskObj.pushValues(alist);
+
+		if (alist.length > 1) {
+			var mid = Math.floor(alist.length / 2);
+			var lefthalf = alist.slice(0, mid),
+			    righthalf = alist.slice(mid);
+
+			_mergeSort(lefthalf);
+			_mergeSort(righthalf);
+
+			var i = 0,
+			    j = 0,
+			    k = 0;
+			while (i < lefthalf.length && j < righthalf.length) {
+				taskObj.pushValues(alist);
+				if (lefthalf[i] < righthalf[j]) {
+					alist[k] = lefthalf[i];
+					i = i + 1;
+				} else {
+					alist[k] = righthalf[j];
+					j = j + 1;
+				}
+
+				k = k + 1;
+			}
+
+			while (i < lefthalf.length) {
+				taskObj.pushValues(alist);
+				alist[k] = lefthalf[i];
+				i = i + 1;
+				k = k + 1;
+			}
+
+			while (j < righthalf.length) {
+				taskObj.pushValues(alist);
+				alist[k] = righthalf[j];
+				j = j + 1;
+				k = k + 1;
+			}
+		}
+
+		// console.log("Merging ", alist);
+	}
+
 	//end main
 
 	//test
 
-	function _mergeSort(array, first, last) {
-		// var array = values;
-		// console.log(array);
-		taskObj.pushValues(values);
-
-		first = first === undefined ? 0 : first;
-		last = last === undefined ? array.length - 1 : last;
-		if (last - first < 1) {
-			return;
-		}
-		var middle = Math.floor((first + last) / 2);
-		_mergeSort(array, first, middle);
-		_mergeSort(array, middle + 1, last);
-
-		var f = first;
-		var m = middle;
-
-		while (f <= m && m + 1 <= last) {
-			taskObj.pushValues(values);
-			if (array[f] >= array[m + 1]) {
-				// array.insertBefore(m + 1, f);
-
-				var from = m + 1,
-				    to = f;
-				// var temp = array[from];
-				array.insert(array[from], to);
-				// for (var i = array.length - 1; to <= i; i--) {
-				// 	// taskObj.pushValues(values);
-				// 	array[i + 1] = array[i];
-				// }
-				// array[to] = temp;
-				if (to < from) {
-					array.splice(from + 1, 1);
-				}
-
-				m++;
-			}
-			f++;
-		}
-	}
+	/*	function _mergeSort(array, first, last) {
+ 		// var array = values;
+ 		// console.log(array);
+ 		taskObj.pushValues(values);
+ 
+ 		first = (first === undefined) ? 0 : first;
+ 		last = (last === undefined) ? array.length - 1 : last;
+ 		if (last - first < 1) {
+ 			return
+ 		}
+ 		var middle = Math.floor((first + last) / 2);
+ 		_mergeSort(array, first, middle);
+ 		_mergeSort(array, middle + 1, last);
+ 
+ 
+ 		var f = first;
+ 		var m = middle;
+ 
+ 		while (f <= m && m + 1 <= last) {
+ 			taskObj.pushValues(values);
+ 			if (array[f] >= array[m + 1]) {
+ 				// array.insertBefore(m + 1, f);
+ 
+ 				var from = m + 1, to = f;
+ 				// var temp = array[from];
+ 				array.insert(array[from], to)
+ 				// for (var i = array.length - 1; to <= i; i--) {
+ 				// 	// taskObj.pushValues(values);
+ 				// 	array[i + 1] = array[i];
+ 				// }
+ 				// array[to] = temp;
+ 				if (to < from) {
+ 					array.splice(from + 1, 1);
+ 				}
+ 
+ 				m++;
+ 			}
+ 			f++;
+ 		}
+ 	}*/
 
 	_mergeSort(values);
 	//end test

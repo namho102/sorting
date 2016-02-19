@@ -389,46 +389,63 @@ function mergeSort(barObj, taskObj) {
 	var values = barObj.bars;
 
 	//main
-	/*    function merge(left, right, arr) {
-	        // console.log(arr);
-	        console.log(left, right, arr);
-	        var a = 0;
+	
+	function _mergeSort(alist) {
+		// console.log("Splitting ", alist);
+		// console.log(alist);
+		taskObj.pushValues(alist);
 
-	        while (left.length && right.length) {
-	            // taskObj.pushValues(arr);
-	            arr[a++] = (right[0] < left[0]) ? right.shift() : left.shift();
-	        }
-	        while (left.length) {
-	            // taskObj.pushValues(arr);
-	            arr[a++] = left.shift();
-	        }
-	        while (right.length) {
-	            // taskObj.pushValues(arr);
-	            arr[a++] = right.shift();
-	        }
-	    }
+		if (alist.length > 1) {
+			var mid = Math.floor(alist.length / 2);
+			var lefthalf = alist.slice(0, mid),
+				righthalf = alist.slice(mid);
 
-	    function _mergeSort(arr, tmp, len) {
-	        // console.log(arr, tmp);
-	        taskObj.pushValues(arr);
-	        if (len === 1) { return; }
+			_mergeSort(lefthalf);
+			_mergeSort(righthalf);
 
-	        var m = Math.floor(len / 2),
-	            tmp_l = tmp.slice(0, m),
-	            tmp_r = tmp.slice(m);
+			var i = 0,
+				j = 0,
+				k = 0;
+			while (i < lefthalf.length && j < righthalf.length) {
+				taskObj.pushValues(alist);
+				if (lefthalf[i] < righthalf[j]) {
+					alist[k] = lefthalf[i];
+					i = i + 1;
+				} else {
+					alist[k] = righthalf[j];
+					j = j + 1;
+				}
 
-	        _mergeSort(tmp_l, arr.slice(0, m), m);
-	        _mergeSort(tmp_r, arr.slice(m), len - m);
-	        merge(tmp_l, tmp_r, arr);
-	    }
+				k = k + 1;
+			}
 
-	    _mergeSort(values, values.slice(), values.length);*/
+
+			while (i < lefthalf.length) {
+				taskObj.pushValues(alist);
+				alist[k] = lefthalf[i];
+				i = i + 1;
+				k = k + 1;
+			}
+
+
+			while (j < righthalf.length) {
+				taskObj.pushValues(alist);
+				alist[k] = righthalf[j];
+				j = j + 1;
+				k = k + 1;
+			}
+		}
+
+
+
+		// console.log("Merging ", alist);
+	}
+	
 	//end main
 
 	//test
 
-
-	function _mergeSort(array, first, last) {
+/*	function _mergeSort(array, first, last) {
 		// var array = values;
 		// console.log(array);
 		taskObj.pushValues(values);
@@ -467,7 +484,8 @@ function mergeSort(barObj, taskObj) {
 			}
 			f++;
 		}
-	}
+	}*/
+
 
 	_mergeSort(values);
 	//end test
