@@ -44,3 +44,30 @@ function getRandomColor() {
     }
     return color;
 }
+
+Array.prototype.insert = function (value, index) {
+    var array = this;
+    for (var i = array.length - 1; index <= i; i--) {
+        array[i + 1] = array[i];
+    }
+    array[index] = value;
+};
+
+Array.prototype.insertBefore = function (from, to) {
+    this.insert(this[from], to);
+    if (to < from) {
+        from += 1;
+    }
+    this.splice(from, 1);
+};
+/*
+    
+    for(var i = array.length - 1; to <= i; i--) {
+        array[i + 1] = array[i];
+    }
+      array[to] = array[from]
+      if(to < from){
+    from += 1
+    }
+  this.splice(from, 1)
+*/
