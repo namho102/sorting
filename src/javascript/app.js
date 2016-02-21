@@ -84,7 +84,6 @@ class Bars {
 		// console.log(data);
 		this.bars = data;
 		var size = this.size;
-		// console.log(data);
 		// var data = this.bars;
 
 		// var svg = this.selector.append("svg").attr('width', '100%');
@@ -151,6 +150,7 @@ class GraphicalSort {
 		//Tasks
 		this.tasks = new Task(this.bars);
 		// this.size = controls.size;
+		
 		// Set default algorithms
 		this.sortMenu = [bubbleSort, selectionSort, insertionSort, quickSort, mergeSort, heapSort];
 		this.pos = 0;
@@ -244,7 +244,8 @@ class Task {
 
 }
 
-//Sample Sort
+//Sorting Functions
+
 function bubbleSort(barObj, taskObj) {
 	var values = barObj.bars;
 
