@@ -7,12 +7,12 @@ const algsList = [
 	"Heap"
 ];
 const size = [5, 10, 20, 30, 50, 70, 100];
-const speed = ['1x', '2x', '3x'];
+const speed = ['1x', '2x', '3x', '4x', '5x'];
 
 class Controller {
 	constructor() {
 		this.size = 20;
-		this.speed = '1x';
+		this.speed = '2x';
 
 		this.createElements();
 		this.setEvents();
@@ -35,9 +35,9 @@ class Controller {
 			text(el);
 		});
 
-		speed.forEach((el) => {
+		speed.forEach((el, i) => {
 			d3.select("#speed").
-			append("li").append("a").
+			append("li").append("a").attr('data-speed', i * 1.5).
 			attr('class', 'option').
 			text(el);
 		});
@@ -52,6 +52,12 @@ class Controller {
 		$('#size a').click((evt) => {
 			this.size = $(evt.target).text();
 			$('#size a').removeClass('selected');
+			$(evt.target).addClass('selected');
+		});
+        
+        $('#speed a').click((evt) => {
+			this.size = $(evt.target).text();
+			$('#speed a').removeClass('selected');
 			$(evt.target).addClass('selected');
 		});
 
@@ -213,8 +219,8 @@ class Task {
 		this.delay = 40;
 	}
 
-	processItems(delay) {
-		delay = delay || this.delay;
+	processItems() {
+		// var delay = this.delay;
 		var bars = this.bars;
 		var queue = this.tasks;
 		var self = this;
@@ -226,7 +232,8 @@ class Task {
 			// console.log(nextItem);
 			bars.renderData(nextItem);
 			// processItem(nextItem);
-			setTimeout(processNextBatch, self.delay);
+            // console.log(self.getDelay());
+			setTimeout(processNextBatch, self.getDelay());
 			// setTimeout(processNextBatch, delay);
 		}
 		processNextBatch();
@@ -237,7 +244,12 @@ class Task {
 		this.tasks.push(tempVar);
 		// console.log(this.tasks);
 	}
-
+    
+    getDelay() {
+        var speed = $('#speed').find(".selected").data('speed'); 
+        return speed * 10;
+    }
+    
 	clean() {
 		this.tasks = [];
 	}

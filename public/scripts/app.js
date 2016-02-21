@@ -8,14 +8,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var algsList = ["Bubble", "Selection", "Insertion", "Quick", "Merge", "Heap"];
 var size = [5, 10, 20, 30, 50, 70, 100];
-var speed = ['1x', '2x', '3x'];
+var speed = ['1x', '2x', '3x', '4x', '5x'];
 
 var Controller = function () {
 	function Controller() {
 		_classCallCheck(this, Controller);
 
 		this.size = 20;
-		this.speed = '1x';
+		this.speed = '2x';
 
 		this.createElements();
 		this.setEvents();
@@ -33,8 +33,8 @@ var Controller = function () {
 				d3.select("#size").append("li").append("a").attr('class', 'option').text(el);
 			});
 
-			speed.forEach(function (el) {
-				d3.select("#speed").append("li").append("a").attr('class', 'option').text(el);
+			speed.forEach(function (el, i) {
+				d3.select("#speed").append("li").append("a").attr('data-speed', i * 1.5).attr('class', 'option').text(el);
 			});
 
 			$("a:contains(" + this.size + ")").addClass('selected');
@@ -49,6 +49,12 @@ var Controller = function () {
 			$('#size a').click(function (evt) {
 				_this.size = $(evt.target).text();
 				$('#size a').removeClass('selected');
+				$(evt.target).addClass('selected');
+			});
+
+			$('#speed a').click(function (evt) {
+				_this.size = $(evt.target).text();
+				$('#speed a').removeClass('selected');
 				$(evt.target).addClass('selected');
 			});
 		}
@@ -93,7 +99,6 @@ var Bars = function () {
 			// console.log(data);
 			this.bars = data;
 			var size = this.size;
-			// console.log(data);
 			// var data = this.bars;
 
 			// var svg = this.selector.append("svg").attr('width', '100%');
@@ -162,6 +167,7 @@ var GraphicalSort = function () {
 		//Tasks
 		this.tasks = new Task(this.bars);
 		// this.size = controls.size;
+
 		// Set default algorithms
 		this.sortMenu = [bubbleSort, selectionSort, insertionSort, quickSort, mergeSort, heapSort];
 		this.pos = 0;
@@ -236,8 +242,8 @@ var Task = function () {
 
 	_createClass(Task, [{
 		key: "processItems",
-		value: function processItems(delay) {
-			delay = delay || this.delay;
+		value: function processItems() {
+			// var delay = this.delay;
 			var bars = this.bars;
 			var queue = this.tasks;
 			var self = this;
@@ -249,7 +255,8 @@ var Task = function () {
 				// console.log(nextItem);
 				bars.renderData(nextItem);
 				// processItem(nextItem);
-				setTimeout(processNextBatch, self.delay);
+				// console.log(self.getDelay());
+				setTimeout(processNextBatch, self.getDelay());
 				// setTimeout(processNextBatch, delay);
 			}
 			processNextBatch();
@@ -262,6 +269,12 @@ var Task = function () {
 			// console.log(this.tasks);
 		}
 	}, {
+		key: "getDelay",
+		value: function getDelay() {
+			var speed = $('#speed').find(".selected").data('speed');
+			return speed * 10;
+		}
+	}, {
 		key: "clean",
 		value: function clean() {
 			this.tasks = [];
@@ -271,8 +284,7 @@ var Task = function () {
 	return Task;
 }();
 
-//Sample Sort
-
+//Sorting Functions
 
 function bubbleSort(barObj, taskObj) {
 	var values = barObj.bars;
@@ -470,8 +482,7 @@ function mergeSort(barObj, taskObj) {
  		// var array = values;
  		// console.log(array);
  		taskObj.pushValues(values);
- 
- 		first = (first === undefined) ? 0 : first;
+ 			first = (first === undefined) ? 0 : first;
  		last = (last === undefined) ? array.length - 1 : last;
  		if (last - first < 1) {
  			return
@@ -480,16 +491,13 @@ function mergeSort(barObj, taskObj) {
  		_mergeSort(array, first, middle);
  		_mergeSort(array, middle + 1, last);
  
- 
  		var f = first;
  		var m = middle;
- 
- 		while (f <= m && m + 1 <= last) {
+ 			while (f <= m && m + 1 <= last) {
  			taskObj.pushValues(values);
  			if (array[f] >= array[m + 1]) {
  				// array.insertBefore(m + 1, f);
- 
- 				var from = m + 1, to = f;
+ 					var from = m + 1, to = f;
  				// var temp = array[from];
  				array.insert(array[from], to)
  				// for (var i = array.length - 1; to <= i; i--) {
@@ -500,8 +508,7 @@ function mergeSort(barObj, taskObj) {
  				if (to < from) {
  					array.splice(from + 1, 1);
  				}
- 
- 				m++;
+ 					m++;
  			}
  			f++;
  		}
