@@ -210,6 +210,8 @@ var GraphicalSort = function () {
 		key: "reload",
 		value: function reload() {
 			console.log('reloading');
+			this.tasks.cancel();
+
 			var newSize = this.controller.getSize();
 			var newData = generateData(newSize);
 			console.log(newData);
@@ -238,6 +240,8 @@ var Task = function () {
 		this.bars = bars;
 		this.tasks = [];
 		this.delay = 40;
+
+		this.timeoutID = undefined;
 	}
 
 	_createClass(Task, [{
@@ -256,10 +260,23 @@ var Task = function () {
 				bars.renderData(nextItem);
 				// processItem(nextItem);
 				// console.log(self.getDelay());
-				setTimeout(processNextBatch, self.getDelay());
+
+				self.timeoutID = setTimeout(processNextBatch, self.getDelay());
+				// self._setTimeout(processNextBatch);
+				// setTimeout(processNextBatch, self.getDelay());
 				// setTimeout(processNextBatch, delay);
 			}
 			processNextBatch();
+		}
+
+		// _setTimeout(func) {
+		//     setTimeout(func, this.getDelay());
+		// }
+
+	}, {
+		key: "cancel",
+		value: function cancel(func) {
+			clearTimeout(this.timeoutID);
 		}
 	}, {
 		key: "pushValues",

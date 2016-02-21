@@ -193,6 +193,8 @@ class GraphicalSort {
 
 	reload() {
 		console.log('reloading');
+        this.tasks.cancel();
+        
 		var newSize = this.controller.getSize();
 		var newData = generateData(newSize);
 		console.log(newData);
@@ -217,6 +219,8 @@ class Task {
 		this.bars = bars;
 		this.tasks = [];
 		this.delay = 40;
+        
+        this.timeoutID = undefined;
 	}
 
 	processItems() {
@@ -233,11 +237,22 @@ class Task {
 			bars.renderData(nextItem);
 			// processItem(nextItem);
             // console.log(self.getDelay());
-			setTimeout(processNextBatch, self.getDelay());
+            
+            self.timeoutID = setTimeout(processNextBatch, self.getDelay());
+            // self._setTimeout(processNextBatch);
+			// setTimeout(processNextBatch, self.getDelay());
 			// setTimeout(processNextBatch, delay);
 		}
 		processNextBatch();
 	}
+    
+    // _setTimeout(func) {
+    //     setTimeout(func, this.getDelay());
+    // }
+    
+    cancel(func) {
+        clearTimeout(this.timeoutID);
+    }
 
 	pushValues(values) {
 		var tempVar = values.slice(0); //creating not copying, !IMPORTANT !FUCKING ERROR
