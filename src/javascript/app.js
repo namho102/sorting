@@ -199,6 +199,7 @@ class GraphicalSort {
 		var newData = generateData(newSize);
 		console.log(newData);
 		// console.log(newSize);
+        
 		this.bars.update(newSize, newData);
 		this.bars.renderData(newData);
 
