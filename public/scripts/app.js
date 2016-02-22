@@ -498,7 +498,8 @@ function mergeSort(barObj, taskObj) {
  		// var array = values;
  		// console.log(array);
  		taskObj.pushValues(values);
- 			first = (first === undefined) ? 0 : first;
+ 
+ 		first = (first === undefined) ? 0 : first;
  		last = (last === undefined) ? array.length - 1 : last;
  		if (last - first < 1) {
  			return
@@ -507,13 +508,16 @@ function mergeSort(barObj, taskObj) {
  		_mergeSort(array, first, middle);
  		_mergeSort(array, middle + 1, last);
  
+ 
  		var f = first;
  		var m = middle;
- 			while (f <= m && m + 1 <= last) {
+ 
+ 		while (f <= m && m + 1 <= last) {
  			taskObj.pushValues(values);
  			if (array[f] >= array[m + 1]) {
  				// array.insertBefore(m + 1, f);
- 					var from = m + 1, to = f;
+ 
+ 				var from = m + 1, to = f;
  				// var temp = array[from];
  				array.insert(array[from], to)
  				// for (var i = array.length - 1; to <= i; i--) {
@@ -524,7 +528,8 @@ function mergeSort(barObj, taskObj) {
  				if (to < from) {
  					array.splice(from + 1, 1);
  				}
- 					m++;
+ 
+ 				m++;
  			}
  			f++;
  		}
