@@ -315,15 +315,14 @@ function bubbleSort(barObj, taskObj) {
 
 			if (values[i - 1] > values[i]) {
 				done = false;
-				// [values[i - 1], values[i]] = [values[i], values[i - 1]];
-				var _ref = [values[i], values[i - 1]];
-				values[i - 1] = _ref[0];
+
+
 				// var tempValues = values.slice(0);
-
-				values[i] = _ref[1];
-
 				// taskObj.pushValues(tempValues);
 				// taskObj.pushValues(values);
+				var _ref = [values[i], values[i - 1]];
+				values[i - 1] = _ref[0];
+				values[i] = _ref[1];
 			}
 		}
 	}
