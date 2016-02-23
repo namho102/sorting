@@ -90,8 +90,9 @@ class Bars {
 	}
 
 	renderData(data) {
-		console.log('rendering. . .');
-		console.log(data);
+
+		console.log('rendering. . .', this.root);
+		// console.log(data);
 		this.bars = data;
 		var size = this.size;
 		// var data = this.bars;
@@ -204,32 +205,48 @@ class GraphicalSort {
 
 	reload() {
 		console.log('reloading');
-		this.tasks.cancel();
-		this.tasks2.cancel();
 
-		var newSize = this.controller.getSize();
-		var newData = generateData(newSize);
-		console.log(newData);
-		// console.log(newSize);
-
-		this.bars.update(newSize, newData);
-		this.bars2.update(newSize, newData);
-		this.bars.renderData(newData);
-		this.bars2.renderData(newData);
-
-	}
-
-	start() {
-		console.log('starting');
 		this.tasks.clean();
 		this.tasks2.clean();
 
 		this.tasks.cancel();
 		this.tasks2.cancel();
 
+		var newSize = this.controller.getSize();
+		var newData = generateData(newSize);
+		var newData2 = generateData(newSize);
+		console.log(newData);
+		// console.log(newSize);
+
+		this.bars.update(newSize, newData);
+		this.bars2.update(newSize, newData2);
+		this.bars.renderData(newData);
+		this.bars2.renderData(newData2);
+
+	}
+
+	start() {
+		console.log('starting');
+		// this.tasks.clean();
+		// this.tasks2.clean();
+
+		// this.tasks.cancel();
+		// this.tasks2.cancel();
+
 
 		var arr = [0, 1, 2, 3, 4, 5];
 		var random = shuffle(arr);
+
+		async.parallel([
+			() => {
+				this.sortMenu[random[2]](this.bars, this.tasks);
+				// this.sortMenu[3](this.bars2, this.tasks2);
+			},
+			() => {
+				this.sortMenu[random[1]](this.bars2, this.tasks2);
+			}
+		]);
+
 		// console.log(this.getPos());
 		// bubbleSort(this.bars, this.tasks);
 		// this.sortMenu[this.getPos()](this.bars, this.tasks);
@@ -256,15 +273,7 @@ class GraphicalSort {
 					this.sortMenu[2](this.bars, this.tasks);
 				}, 0);*/
 
-		async.parallel([
-			() => {
-				this.sortMenu[random[2]](this.bars, this.tasks);
-				// this.sortMenu[3](this.bars2, this.tasks2);
-			},
-			() => {
-				this.sortMenu[random[1]](this.bars2, this.tasks2);
-			}
-		]);
+		
 
 		// setTimeout(() => {
 		// 	this.sortMenu[2](this.bars, this.tasks);
@@ -338,6 +347,7 @@ class Task {
 //Sorting Functions
 
 function bubbleSort(barObj, taskObj) {
+	console.log('bubble sort starting', barObj.bars);
 	var values = barObj.bars;
 
 	//main
@@ -366,7 +376,7 @@ function bubbleSort(barObj, taskObj) {
 }
 
 function selectionSort(barObj, taskObj) {
-	console.log('selection sort starting');
+	console.log('selection sort starting', barObj.bars);
 	var values = barObj.bars;
 
 	//main
@@ -399,7 +409,7 @@ function selectionSort(barObj, taskObj) {
 }
 
 function insertionSort(barObj, taskObj) {
-	console.log('insertion sort starting');
+	console.log('insertion sort starting', barObj.bars);
 	var values = barObj.bars;
 
 	//main
@@ -421,7 +431,7 @@ function insertionSort(barObj, taskObj) {
 }
 
 function quickSort(barObj, taskObj) {
-	console.log('quick sort starting');
+	console.log('quick sort starting', barObj.bars);
 	var values = barObj.bars;
 
 	//main
@@ -470,7 +480,7 @@ function quickSort(barObj, taskObj) {
 }
 
 function mergeSort(barObj, taskObj) {
-	console.log('merge sort starting');
+	console.log('merge sort starting', barObj.bars);
 	var values = barObj.bars;
 
 	//main
@@ -578,7 +588,7 @@ function mergeSort(barObj, taskObj) {
 }
 
 function heapSort(barObj, taskObj) {
-	console.log('heap sort starting');
+	console.log('heap sort starting', barObj.bars);
 	var values = barObj.bars;
 
 	//main

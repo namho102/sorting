@@ -99,8 +99,8 @@ var Bars = function () {
 		value: function renderData(data) {
 			var _Math2;
 
-			console.log('rendering. . .');
-			console.log(data);
+			console.log('rendering. . .', this.root);
+			// console.log(data);
 			this.bars = data;
 			var size = this.size;
 			// var data = this.bars;
@@ -219,18 +219,23 @@ var GraphicalSort = function () {
 		key: "reload",
 		value: function reload() {
 			console.log('reloading');
+
+			this.tasks.clean();
+			this.tasks2.clean();
+
 			this.tasks.cancel();
 			this.tasks2.cancel();
 
 			var newSize = this.controller.getSize();
 			var newData = generateData(newSize);
+			var newData2 = generateData(newSize);
 			console.log(newData);
 			// console.log(newSize);
 
 			this.bars.update(newSize, newData);
-			this.bars2.update(newSize, newData);
+			this.bars2.update(newSize, newData2);
 			this.bars.renderData(newData);
-			this.bars2.renderData(newData);
+			this.bars2.renderData(newData2);
 		}
 	}, {
 		key: "start",
@@ -238,14 +243,22 @@ var GraphicalSort = function () {
 			var _this3 = this;
 
 			console.log('starting');
-			this.tasks.clean();
-			this.tasks2.clean();
+			// this.tasks.clean();
+			// this.tasks2.clean();
 
-			this.tasks.cancel();
-			this.tasks2.cancel();
+			// this.tasks.cancel();
+			// this.tasks2.cancel();
 
 			var arr = [0, 1, 2, 3, 4, 5];
 			var random = shuffle(arr);
+
+			async.parallel([function () {
+				_this3.sortMenu[random[2]](_this3.bars, _this3.tasks);
+				// this.sortMenu[3](this.bars2, this.tasks2);
+			}, function () {
+				_this3.sortMenu[random[1]](_this3.bars2, _this3.tasks2);
+			}]);
+
 			// console.log(this.getPos());
 			// bubbleSort(this.bars, this.tasks);
 			// this.sortMenu[this.getPos()](this.bars, this.tasks);
@@ -269,13 +282,6 @@ var GraphicalSort = function () {
    				setTimeout(() => {
    			this.sortMenu[2](this.bars, this.tasks);
    		}, 0);*/
-
-			async.parallel([function () {
-				_this3.sortMenu[random[2]](_this3.bars, _this3.tasks);
-				// this.sortMenu[3](this.bars2, this.tasks2);
-			}, function () {
-				_this3.sortMenu[random[1]](_this3.bars2, _this3.tasks2);
-			}]);
 
 			// setTimeout(() => {
 			// 	this.sortMenu[2](this.bars, this.tasks);
@@ -361,6 +367,7 @@ var Task = function () {
 //Sorting Functions
 
 function bubbleSort(barObj, taskObj) {
+	console.log('bubble sort starting', barObj.bars);
 	var values = barObj.bars;
 
 	//main
@@ -392,7 +399,7 @@ function bubbleSort(barObj, taskObj) {
 }
 
 function selectionSort(barObj, taskObj) {
-	console.log('selection sort starting');
+	console.log('selection sort starting', barObj.bars);
 	var values = barObj.bars;
 
 	//main
@@ -424,7 +431,7 @@ function selectionSort(barObj, taskObj) {
 }
 
 function insertionSort(barObj, taskObj) {
-	console.log('insertion sort starting');
+	console.log('insertion sort starting', barObj.bars);
 	var values = barObj.bars;
 
 	//main
@@ -446,7 +453,7 @@ function insertionSort(barObj, taskObj) {
 }
 
 function quickSort(barObj, taskObj) {
-	console.log('quick sort starting');
+	console.log('quick sort starting', barObj.bars);
 	var values = barObj.bars;
 
 	//main
@@ -496,7 +503,7 @@ function quickSort(barObj, taskObj) {
 }
 
 function mergeSort(barObj, taskObj) {
-	console.log('merge sort starting');
+	console.log('merge sort starting', barObj.bars);
 	var values = barObj.bars;
 
 	//main
@@ -600,7 +607,7 @@ function mergeSort(barObj, taskObj) {
 }
 
 function heapSort(barObj, taskObj) {
-	console.log('heap sort starting');
+	console.log('heap sort starting', barObj.bars);
 	var values = barObj.bars;
 
 	//main
