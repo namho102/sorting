@@ -227,6 +227,9 @@ class GraphicalSort {
 		this.tasks.cancel();
 		this.tasks2.cancel();
 
+
+		var arr = [0, 1, 2, 3, 4, 5];
+		var random = shuffle(arr);
 		// console.log(this.getPos());
 		// bubbleSort(this.bars, this.tasks);
 		// this.sortMenu[this.getPos()](this.bars, this.tasks);
@@ -235,9 +238,10 @@ class GraphicalSort {
 		// setTimeout(() => {
 		// 	this.sortMenu[3](this.bars2, this.tasks2);
 		// }, 0);
-		this.sortMenu[5](this.bars2, this.tasks2);
-		this.sortMenu[5](this.bars, this.tasks);
+		// this.sortMenu[random[2]](this.bars, this.tasks);
 
+		// this.sortMenu[random[1]](this.bars2, this.tasks2);
+		
 
 		//hot test
 		// var arr = [1, 2];
@@ -252,15 +256,15 @@ class GraphicalSort {
 					this.sortMenu[2](this.bars, this.tasks);
 				}, 0);*/
 
-		// async.parallel([
-		// 	() => {
-		// 		this.sortMenu[2](this.bars, this.tasks);
-		// 		// this.sortMenu[3](this.bars2, this.tasks2);
-		// 	},
-		// 	() => {
-		// 		this.sortMenu[3](this.bars2, this.tasks2);
-		// 	}
-		// ]);
+		async.parallel([
+			() => {
+				this.sortMenu[random[2]](this.bars, this.tasks);
+				// this.sortMenu[3](this.bars2, this.tasks2);
+			},
+			() => {
+				this.sortMenu[random[1]](this.bars2, this.tasks2);
+			}
+		]);
 
 		// setTimeout(() => {
 		// 	this.sortMenu[2](this.bars, this.tasks);
@@ -295,12 +299,11 @@ class Task {
 			var nextItem;
 			nextItem = queue.shift();
 			if (!nextItem) return;
-			// console.log(nextItem);
+
 			bars.renderData(nextItem);
-			// processItem(nextItem);
-			// console.log(self.getDelay());
+
 			self.timeoutID = setTimeout(processNextBatch, self.getDelay());
-			// self._setTimeout(processNextBatch);
+
 			// setTimeout(processNextBatch, self.getDelay());
 			// setTimeout(processNextBatch, delay);
 		}

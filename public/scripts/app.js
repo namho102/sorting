@@ -235,6 +235,8 @@ var GraphicalSort = function () {
 	}, {
 		key: "start",
 		value: function start() {
+			var _this3 = this;
+
 			console.log('starting');
 			this.tasks.clean();
 			this.tasks2.clean();
@@ -242,6 +244,8 @@ var GraphicalSort = function () {
 			this.tasks.cancel();
 			this.tasks2.cancel();
 
+			var arr = [0, 1, 2, 3, 4, 5];
+			var random = shuffle(arr);
 			// console.log(this.getPos());
 			// bubbleSort(this.bars, this.tasks);
 			// this.sortMenu[this.getPos()](this.bars, this.tasks);
@@ -250,8 +254,9 @@ var GraphicalSort = function () {
 			// setTimeout(() => {
 			// 	this.sortMenu[3](this.bars2, this.tasks2);
 			// }, 0);
-			this.sortMenu[5](this.bars2, this.tasks2);
-			this.sortMenu[5](this.bars, this.tasks);
+			// this.sortMenu[random[2]](this.bars, this.tasks);
+
+			// this.sortMenu[random[1]](this.bars2, this.tasks2);
 
 			//hot test
 			// var arr = [1, 2];
@@ -265,15 +270,12 @@ var GraphicalSort = function () {
    			this.sortMenu[2](this.bars, this.tasks);
    		}, 0);*/
 
-			// async.parallel([
-			// 	() => {
-			// 		this.sortMenu[2](this.bars, this.tasks);
-			// 		// this.sortMenu[3](this.bars2, this.tasks2);
-			// 	},
-			// 	() => {
-			// 		this.sortMenu[3](this.bars2, this.tasks2);
-			// 	}
-			// ]);
+			async.parallel([function () {
+				_this3.sortMenu[random[2]](_this3.bars, _this3.tasks);
+				// this.sortMenu[3](this.bars2, this.tasks2);
+			}, function () {
+				_this3.sortMenu[random[1]](_this3.bars2, _this3.tasks2);
+			}]);
 
 			// setTimeout(() => {
 			// 	this.sortMenu[2](this.bars, this.tasks);
@@ -313,12 +315,11 @@ var Task = function () {
 				var nextItem;
 				nextItem = queue.shift();
 				if (!nextItem) return;
-				// console.log(nextItem);
+
 				bars.renderData(nextItem);
-				// processItem(nextItem);
-				// console.log(self.getDelay());
+
 				self.timeoutID = setTimeout(processNextBatch, self.getDelay());
-				// self._setTimeout(processNextBatch);
+
 				// setTimeout(processNextBatch, self.getDelay());
 				// setTimeout(processNextBatch, delay);
 			}
