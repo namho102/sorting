@@ -16,6 +16,10 @@ function generateData(size) {
     return shuffle(generateArray(size));
 }
 
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function shuffle(arr) {
     var currentIndex = arr.length,
         temporaryValue,

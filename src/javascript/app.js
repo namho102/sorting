@@ -65,35 +65,38 @@ class Controller {
             $(evt.target).addClass('selected');
         });
         
-        /*
-Reference: http://jsfiddle.net/BB3JK/47/
-*/
 
-        $('select').each(function () {
+        $('.select').each(function () {
+            var $this = $(this), numberOfOptions = algsList.length;
+
+            console.log($this);
+            console.log(numberOfOptions);
             
-            var $this = $(this), numberOfOptions = $(this).children('option').length;
-            // console.log($this);
-            $this.addClass('select-hidden');
-            $this.wrap('<div class="select"></div>');
-            $this.after('<div class="select-styled"></div>');
+            // $this.addClass('select-hidden');
+            // $this.append('<div class="select"></div>');
+            $this.append('<div class="select-styled"></div>');
 
-            var $styledSelect = $this.next('div.select-styled');
-            $styledSelect.text($this.children('option').eq(0).text());
-
-            var $list = $('<ul />', {
+            var styledSelect = $this.find('div.select-styled');
+            var ramdomAlgs = algsList[getRandomInt(0, numberOfOptions - 1)];
+            styledSelect.text(ramdomAlgs);
+            console.log(ramdomAlgs);
+            var list = $('<ul />', {
                 'class': 'select-options'
-            }).insertAfter($styledSelect);
+            }).insertAfter(styledSelect);
 
             for (var i = 0; i < numberOfOptions; i++) {
                 $('<li />', {
-                    text: $this.children('option').eq(i).text(),
-                    rel: $this.children('option').eq(i).val()
-                }).appendTo($list);
+                    text: algsList[i],
+                    rel: algsList[i],
+                    'data-pos': i
+                }).appendTo(list);
             }
-
-            var $listItems = $list.children('li');
-
-            $styledSelect.click(function (e) {
+            
+            list.find("li:contains("+ styledSelect.text() +")").addClass('pos-active');
+            var listItems = list.children('li');
+            // console.log(listItems.contains('Bubble'))
+            // console.log(list.find('li').contains(styledSelect.text()))
+            styledSelect.click(function (e) {
                 e.stopPropagation();
                 $('div.select-styled.active').each(function () {
                     $(this).removeClass('active').next('ul.select-options').hide();
@@ -101,17 +104,15 @@ Reference: http://jsfiddle.net/BB3JK/47/
                 $(this).toggleClass('active').next('ul.select-options').toggle();
             });
 
-            $listItems.click(function (e) {
+            listItems.click(function (e) {
                 e.stopPropagation();
-                $styledSelect.text($(this).text()).removeClass('active');
-                $this.val($(this).attr('rel'));
-                $list.hide();
-                console.log($this.val());
+                styledSelect.text($(this).text()).removeClass('active');
+                list.hide();
             });
-
-            $(document).click(function () {
-                $styledSelect.removeClass('active');
-                $list.hide();
+  
+            $(document).click(function() {
+                styledSelect.removeClass('active');
+                list.hide();
             });
 
         });
@@ -240,23 +241,22 @@ class GraphicalSort {
             this.start();
         });
 
-        $('#algs a').click((evt) => {
-            this.pos[this.pos.length] = $(evt.target).data('pos');
-            console.log(this.pos);
-            // $('#algs a').removeClass('selected');
-            $(evt.target).toggleClass('selected');
-
+        $('.select li').click((evt) => {
+            $(evt.target).siblings().removeClass('pos-active');
+            $(evt.target).addClass('pos-active');
             this.reload();
         });
     }
 
-    getPos() {
-        return $('#algs').find(".selected").data('pos');
+    getPos(id) {
+        return $(id).find(".pos-active").data('pos');
     }
 
     reload() {
         console.log('reloading');
-
+        // console.log(this.getPos('#first_algs'));
+        // console.log(this.getPos('#second_algs'));
+        
         this.tasks.clean();
         this.tasks2.clean();
 
@@ -284,17 +284,17 @@ class GraphicalSort {
         // this.tasks.cancel();
         // this.tasks2.cancel();
 
-
-        var arr = [0, 1, 2, 3, 4, 5];
-        var random = shuffle(arr);
+        
+        // var arr = [0, 1, 2, 3, 4, 5];
+        // var random = shuffle(arr);
 
         async.parallel([
             () => {
-                this.sortMenu[random[2]](this.bars, this.tasks);
+                this.sortMenu[this.getPos('#first_algs')](this.bars, this.tasks);
                 // this.sortMenu[3](this.bars2, this.tasks2);
             },
             () => {
-                this.sortMenu[random[1]](this.bars2, this.tasks2);
+                this.sortMenu[this.getPos('#second_algs')](this.bars2, this.tasks2);
             }
         ]);
 
