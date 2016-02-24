@@ -14,7 +14,17 @@ function generateData(size) {
 }
 
 function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
 }
 
 function shuffle(arr) {
@@ -39,16 +49,7 @@ function sleepFor(sleepDuration) {
     while (new Date().getTime() < now + sleepDuration) { /* do nothing */ }
 }
 
-function getRandomColor() {
-    var letters = '0123456789ABCDEF'.split('');
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-}
-
-Array.prototype.insert = function(value, index) {
+Array.prototype.insert = function (value, index) {
     var array = this
     for (var i = array.length - 1; index <= i; i--) {
         array[i + 1] = array[i]
@@ -56,13 +57,13 @@ Array.prototype.insert = function(value, index) {
     array[index] = value
 }
 
-Array.prototype.insertBefore = function(from, to) {
-        this.insert(this[from], to)
-        if (to < from) {
-            from += 1
-        }
-        this.splice(from, 1)
+Array.prototype.insertBefore = function (from, to) {
+    this.insert(this[from], to)
+    if (to < from) {
+        from += 1
     }
+    this.splice(from, 1)
+}
     /*
         
         for(var i = array.length - 1; to <= i; i--) {
