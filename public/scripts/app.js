@@ -18,7 +18,7 @@ var Controller = function () {
     function Controller() {
         _classCallCheck(this, Controller);
 
-        this.size = 100;
+        this.size = 30;
         this.speed = '3x';
 
         this.createElements();

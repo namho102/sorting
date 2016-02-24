@@ -98,75 +98,47 @@ a {
     }
 }
 
-
-// p {
-//   margin-top: 200px;
-// }
-// p a {
-//   text-transform: uppercase;
-//   text-decoration: none;
-//   display: inline-block;
-//   color: #fff;
-//   padding: 5px 10px;
-//   margin: 0 5px;
-//   background-color: #b83729;
-//   -moz-transition: all 0.2s ease-in;
-//   -o-transition: all 0.2s ease-in;
-//   -webkit-transition: all 0.2s ease-in;
-//   transition: all 0.2s ease-in;
-// }
-// p a:hover {
-//   background-color: #ab3326;
-// }
 .select {
     cursor: pointer;
     display: inline-block;
     position: relative;
     font-size: 16px;
-    color: #fff;
+    color: $primary-color;
     width: 220px;
     height: 40px;
+    .select-styled {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: $select-background;
+        padding: 8px 15px;
+        -moz-transition: all 0.2s ease-in;
+        -o-transition: all 0.2s ease-in;
+        -webkit-transition: all 0.2s ease-in;
+        transition: all 0.2s ease-in;
+        &:after {
+            content: "";
+            width: 0;
+            height: 0;
+            border: 7px solid transparent;
+            border-color: $primary-color transparent transparent transparent;
+            position: absolute;
+            top: 16px;
+            right: 10px;
+        }
+        &:hover, &:avtive, &.active {
+            background-color: $select-background;
+        }
+        &:active:after, &.active:after {
+            top: 9px;
+            border-color: transparent transparent $primary-color transparent;
+        }
+    }
 }
 
-.select-styled {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: $select-background;
-    padding: 8px 15px;
-    -moz-transition: all 0.2s ease-in;
-    -o-transition: all 0.2s ease-in;
-    -webkit-transition: all 0.2s ease-in;
-    transition: all 0.2s ease-in;
-}
 
-.select-styled:after {
-    content: "";
-    width: 0;
-    height: 0;
-    border: 7px solid transparent;
-    border-color: #fff transparent transparent transparent;
-    position: absolute;
-    top: 16px;
-    right: 10px;
-}
-
-.select-styled:hover {
-    background-color: $select-background;
-}
-
-.select-styled:active,
-.select-styled.active {
-    background-color: $select-background;
-}
-
-.select-styled:active:after,
-.select-styled.active:after {
-    top: 9px;
-    border-color: transparent transparent #fff transparent;
-}
 
 .select-options {
     display: none;
@@ -179,24 +151,19 @@ a {
     padding: 0;
     list-style: none;
     background-color: $select-background;
+    li {
+        margin: 0;
+        padding: 12px 0;
+        text-indent: 15px;
+        border-top: 1px solid $select-background;
+        // -moz-transition: all 0.15s ease-in;
+        // -o-transition: all 0.15s ease-in;
+        // -webkit-transition: all 0.15s ease-in;
+        // transition: all 0.15s ease-in;
+        &:hover {
+            color: $select-background;
+            background: $primary-color;
+        }
+    }
 }
 
-.select-options li {
-    margin: 0;
-    padding: 12px 0;
-    text-indent: 15px;
-    border-top: 1px solid $select-background;
-    -moz-transition: all 0.15s ease-in;
-    -o-transition: all 0.15s ease-in;
-    -webkit-transition: all 0.15s ease-in;
-    transition: all 0.15s ease-in;
-}
-
-.select-options li:hover {
-    color: $select-background;
-    background: #fff;
-}
-
-.select-options li[rel="hide"] {
-    display: none;
-}

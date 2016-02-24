@@ -15,7 +15,7 @@ const speed = ['1x', '2x', '3x', '4x', '5x'];
 
 class Controller {
     constructor() {
-        this.size = 100;
+        this.size = 30;
         this.speed = '3x';
 
         this.createElements();
