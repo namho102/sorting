@@ -1,7 +1,3 @@
-// import async from 'async';
-
-// console.log(async);
-
 const algsList = [
 	"Bubble",
 	"Selection",
@@ -15,8 +11,8 @@ const speed = ['1x', '2x', '3x', '4x', '5x'];
 
 class Controller {
 	constructor() {
-		this.size = 100;
-		this.speed = '3x';
+		this.size = 20;
+		this.speed = '2x';
 
 		this.createElements();
 		this.setEvents();
@@ -58,8 +54,8 @@ class Controller {
 			$('#size a').removeClass('selected');
 			$(evt.target).addClass('selected');
 		});
-
-		$('#speed a').click((evt) => {
+        
+        $('#speed a').click((evt) => {
 			this.size = $(evt.target).text();
 			$('#speed a').removeClass('selected');
 			$(evt.target).addClass('selected');
@@ -74,7 +70,7 @@ class Controller {
 
 class Bars {
 	constructor(size, root) {
-		// console.log('wtf');
+		console.log('wtf');
 		this.size = size;
 		this.root = root;
 		this.bars = shuffle(generateArray(this.size));
@@ -91,7 +87,7 @@ class Bars {
 
 	renderData(data) {
 		console.log('rendering. . .');
-		console.log(data);
+		// console.log(data);
 		this.bars = data;
 		var size = this.size;
 		// var data = this.bars;
@@ -156,24 +152,17 @@ class GraphicalSort {
 
 		//Bars
 		this.bars = new Bars(this.controller.size, '#bars');
-		this.bars2 = new Bars(this.controller.size, '#bars2');
 
 		//Tasks
 		this.tasks = new Task(this.bars);
-		this.tasks2 = new Task(this.bars2);
 		// this.size = controls.size;
-
+		
 		// Set default algorithms
 		this.sortMenu = [bubbleSort, selectionSort, insertionSort, quickSort, mergeSort, heapSort];
-		this.pos = [0];
+		this.pos = 0;
 
 		this.setEvents();
 	}
-
-	setDefaults() {
-
-	}
-
 
 	setEvents() {
 		$('.controls__group').click(() => {
@@ -189,10 +178,10 @@ class GraphicalSort {
 		});
 
 		$('#algs a').click((evt) => {
-			this.pos[this.pos.length] = $(evt.target).data('pos');
-			console.log(this.pos);
-			// $('#algs a').removeClass('selected');
-			$(evt.target).toggleClass('selected');
+			this.algs = $(evt.target).data('pos');
+			// console.log(this.algs);
+			$('#algs a').removeClass('selected');
+			$(evt.target).addClass('selected');
 
 			this.reload();
 		});
@@ -204,73 +193,23 @@ class GraphicalSort {
 
 	reload() {
 		console.log('reloading');
-		this.tasks.cancel();
-		this.tasks2.cancel();
-
+        this.tasks.cancel();
+        
 		var newSize = this.controller.getSize();
 		var newData = generateData(newSize);
 		console.log(newData);
 		// console.log(newSize);
-
 		this.bars.update(newSize, newData);
-		this.bars2.update(newSize, newData);
 		this.bars.renderData(newData);
-		this.bars2.renderData(newData);
 
 	}
 
 	start() {
 		console.log('starting');
 		this.tasks.clean();
-		this.tasks2.clean();
-
-		this.tasks.cancel();
-		this.tasks2.cancel();
-
 		// console.log(this.getPos());
 		// bubbleSort(this.bars, this.tasks);
-		// this.sortMenu[this.getPos()](this.bars, this.tasks);
-
-		// this.sortMenu[5](this.bars2, this.tasks2);
-		// setTimeout(() => {
-		// 	this.sortMenu[3](this.bars2, this.tasks2);
-		// }, 0);
-		this.sortMenu[5](this.bars2, this.tasks2);
-		this.sortMenu[5](this.bars, this.tasks);
-
-
-		//hot test
-		// var arr = [1, 2];
-		// arr.forEach((el) => {
-		//     this.sortMenu[el](this.bars, this.tasks);
-		// })
-		/*		setTimeout(() => {
-					this.sortMenu[3](this.bars2, this.tasks2);
-				}, 0);
-
-				setTimeout(() => {
-					this.sortMenu[2](this.bars, this.tasks);
-				}, 0);*/
-
-		// async.parallel([
-		// 	() => {
-		// 		this.sortMenu[2](this.bars, this.tasks);
-		// 		// this.sortMenu[3](this.bars2, this.tasks2);
-		// 	},
-		// 	() => {
-		// 		this.sortMenu[3](this.bars2, this.tasks2);
-		// 	}
-		// ]);
-
-		// setTimeout(() => {
-		// 	this.sortMenu[2](this.bars, this.tasks);
-		// 	setTimeout(() => {
-		// 		this.sortMenu[3](this.bars2, this.tasks2);
-		// 	}, 0);
-		// }, 0);
-
-
-		// this.sortMenu[2](this.bars2, this.tasks2);
+		this.sortMenu[this.getPos()](this.bars, this.tasks);
 	}
 
 }
@@ -280,8 +219,8 @@ class Task {
 		this.bars = bars;
 		this.tasks = [];
 		this.delay = 40;
-
-		this.timeoutID = undefined;
+        
+        this.timeoutID = undefined;
 	}
 
 	processItems() {
@@ -289,7 +228,6 @@ class Task {
 		var bars = this.bars;
 		var queue = this.tasks;
 		var self = this;
-		// console.log(queue);
 
 		function processNextBatch() {
 			var nextItem;
@@ -298,34 +236,35 @@ class Task {
 			// console.log(nextItem);
 			bars.renderData(nextItem);
 			// processItem(nextItem);
-			// console.log(self.getDelay());
-			self.timeoutID = setTimeout(processNextBatch, self.getDelay());
-			// self._setTimeout(processNextBatch);
+            // console.log(self.getDelay());
+            
+            self.timeoutID = setTimeout(processNextBatch, self.getDelay());
+            // self._setTimeout(processNextBatch);
 			// setTimeout(processNextBatch, self.getDelay());
 			// setTimeout(processNextBatch, delay);
 		}
 		processNextBatch();
 	}
-
-	// _setTimeout(func) {
-	//     setTimeout(func, this.getDelay());
-	// }
-
-	cancel(func) {
-		clearTimeout(this.timeoutID);
-	}
+    
+    // _setTimeout(func) {
+    //     setTimeout(func, this.getDelay());
+    // }
+    
+    cancel(func) {
+        clearTimeout(this.timeoutID);
+    }
 
 	pushValues(values) {
 		var tempVar = values.slice(0); //creating not copying, !IMPORTANT !FUCKING ERROR
 		this.tasks.push(tempVar);
 		// console.log(this.tasks);
 	}
-
-	getDelay() {
-		var speed = $('#speed').find(".selected").data('speed');
-		return speed * 10;
-	}
-
+    
+    getDelay() {
+        var speed = $('#speed').find(".selected").data('speed'); 
+        return speed * 10;
+    }
+    
 	clean() {
 		this.tasks = [];
 	}
@@ -348,7 +287,7 @@ function bubbleSort(barObj, taskObj) {
 				done = false;
 				[values[i - 1], values[i]] = [values[i], values[i - 1]];
 
-				// var tempValues = values.slice(0);
+                // var tempValues = values.slice(0);
 				// taskObj.pushValues(tempValues);
 				// taskObj.pushValues(values);
 			}
@@ -432,7 +371,7 @@ function quickSort(barObj, taskObj) {
 
 			do {
 				taskObj.pushValues(values);
-
+				
 				while (values[left_new] < pivot) {
 					taskObj.pushValues(values);
 					left_new += 1;
@@ -473,6 +412,8 @@ function mergeSort(barObj, taskObj) {
 	//main
 
 	function _mergeSort(alist) {
+		// console.log("Splitting ", alist);
+		// console.log(alist);
 		taskObj.pushValues(alist);
 
 		if (alist.length > 1) {
@@ -515,6 +456,7 @@ function mergeSort(barObj, taskObj) {
 				k = k + 1;
 			}
 		}
+		// console.log("Merging ", alist);
 	}
 
 	//end main
@@ -585,7 +527,7 @@ function heapSort(barObj, taskObj) {
 		var end = arr.length - 1;
 		while (end > 0) {
 			taskObj.pushValues(values);
-			[arr[0], arr[end]] = [arr[end], arr[0]];
+			[arr[0], arr[end]] = [arr[end], arr[0]]; 
 			siftElementDownHeap(arr, 0, end);
 			end -= 1
 		}

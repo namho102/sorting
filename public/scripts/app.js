@@ -6,10 +6,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-// import async from 'async';
-
-// console.log(async);
-
 var algsList = ["Bubble", "Selection", "Insertion", "Quick", "Merge", "Heap"];
 var size = [5, 10, 20, 30, 50, 70, 100];
 var speed = ['1x', '2x', '3x', '4x', '5x'];
@@ -18,8 +14,8 @@ var Controller = function () {
 	function Controller() {
 		_classCallCheck(this, Controller);
 
-		this.size = 100;
-		this.speed = '3x';
+		this.size = 20;
+		this.speed = '2x';
 
 		this.createElements();
 		this.setEvents();
@@ -76,7 +72,7 @@ var Bars = function () {
 	function Bars(size, root) {
 		_classCallCheck(this, Bars);
 
-		// console.log('wtf');
+		console.log('wtf');
 		this.size = size;
 		this.root = root;
 		this.bars = shuffle(generateArray(this.size));
@@ -100,7 +96,7 @@ var Bars = function () {
 			var _Math2;
 
 			console.log('rendering. . .');
-			console.log(data);
+			// console.log(data);
 			this.bars = data;
 			var size = this.size;
 			// var data = this.bars;
@@ -167,24 +163,19 @@ var GraphicalSort = function () {
 
 		//Bars
 		this.bars = new Bars(this.controller.size, '#bars');
-		this.bars2 = new Bars(this.controller.size, '#bars2');
 
 		//Tasks
 		this.tasks = new Task(this.bars);
-		this.tasks2 = new Task(this.bars2);
 		// this.size = controls.size;
 
 		// Set default algorithms
 		this.sortMenu = [bubbleSort, selectionSort, insertionSort, quickSort, mergeSort, heapSort];
-		this.pos = [0];
+		this.pos = 0;
 
 		this.setEvents();
 	}
 
 	_createClass(GraphicalSort, [{
-		key: "setDefaults",
-		value: function setDefaults() {}
-	}, {
 		key: "setEvents",
 		value: function setEvents() {
 			var _this2 = this;
@@ -202,10 +193,10 @@ var GraphicalSort = function () {
 			});
 
 			$('#algs a').click(function (evt) {
-				_this2.pos[_this2.pos.length] = $(evt.target).data('pos');
-				console.log(_this2.pos);
-				// $('#algs a').removeClass('selected');
-				$(evt.target).toggleClass('selected');
+				_this2.algs = $(evt.target).data('pos');
+				// console.log(this.algs);
+				$('#algs a').removeClass('selected');
+				$(evt.target).addClass('selected');
 
 				_this2.reload();
 			});
@@ -220,69 +211,22 @@ var GraphicalSort = function () {
 		value: function reload() {
 			console.log('reloading');
 			this.tasks.cancel();
-			this.tasks2.cancel();
 
 			var newSize = this.controller.getSize();
 			var newData = generateData(newSize);
 			console.log(newData);
 			// console.log(newSize);
-
 			this.bars.update(newSize, newData);
-			this.bars2.update(newSize, newData);
 			this.bars.renderData(newData);
-			this.bars2.renderData(newData);
 		}
 	}, {
 		key: "start",
 		value: function start() {
 			console.log('starting');
 			this.tasks.clean();
-			this.tasks2.clean();
-
-			this.tasks.cancel();
-			this.tasks2.cancel();
-
 			// console.log(this.getPos());
 			// bubbleSort(this.bars, this.tasks);
-			// this.sortMenu[this.getPos()](this.bars, this.tasks);
-
-			// this.sortMenu[5](this.bars2, this.tasks2);
-			// setTimeout(() => {
-			// 	this.sortMenu[3](this.bars2, this.tasks2);
-			// }, 0);
-			this.sortMenu[5](this.bars2, this.tasks2);
-			this.sortMenu[5](this.bars, this.tasks);
-
-			//hot test
-			// var arr = [1, 2];
-			// arr.forEach((el) => {
-			//     this.sortMenu[el](this.bars, this.tasks);
-			// })
-			/*		setTimeout(() => {
-   			this.sortMenu[3](this.bars2, this.tasks2);
-   		}, 0);
-   				setTimeout(() => {
-   			this.sortMenu[2](this.bars, this.tasks);
-   		}, 0);*/
-
-			// async.parallel([
-			// 	() => {
-			// 		this.sortMenu[2](this.bars, this.tasks);
-			// 		// this.sortMenu[3](this.bars2, this.tasks2);
-			// 	},
-			// 	() => {
-			// 		this.sortMenu[3](this.bars2, this.tasks2);
-			// 	}
-			// ]);
-
-			// setTimeout(() => {
-			// 	this.sortMenu[2](this.bars, this.tasks);
-			// 	setTimeout(() => {
-			// 		this.sortMenu[3](this.bars2, this.tasks2);
-			// 	}, 0);
-			// }, 0);
-
-			// this.sortMenu[2](this.bars2, this.tasks2);
+			this.sortMenu[this.getPos()](this.bars, this.tasks);
 		}
 	}]);
 
@@ -307,7 +251,6 @@ var Task = function () {
 			var bars = this.bars;
 			var queue = this.tasks;
 			var self = this;
-			// console.log(queue);
 
 			function processNextBatch() {
 				var nextItem;
@@ -317,6 +260,7 @@ var Task = function () {
 				bars.renderData(nextItem);
 				// processItem(nextItem);
 				// console.log(self.getDelay());
+
 				self.timeoutID = setTimeout(processNextBatch, self.getDelay());
 				// self._setTimeout(processNextBatch);
 				// setTimeout(processNextBatch, self.getDelay());
@@ -501,6 +445,8 @@ function mergeSort(barObj, taskObj) {
 	//main
 
 	function _mergeSort(alist) {
+		// console.log("Splitting ", alist);
+		// console.log(alist);
 		taskObj.pushValues(alist);
 
 		if (alist.length > 1) {
@@ -541,6 +487,7 @@ function mergeSort(barObj, taskObj) {
 				k = k + 1;
 			}
 		}
+		// console.log("Merging ", alist);
 	}
 
 	//end main
