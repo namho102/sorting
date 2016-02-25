@@ -16,6 +16,19 @@ function generateData(size) {
     return shuffle(generateArray(size));
 }
 
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
 function shuffle(arr) {
     var currentIndex = arr.length,
         temporaryValue,
@@ -37,15 +50,6 @@ function shuffle(arr) {
 function sleepFor(sleepDuration) {
     var now = new Date().getTime();
     while (new Date().getTime() < now + sleepDuration) {/* do nothing */}
-}
-
-function getRandomColor() {
-    var letters = '0123456789ABCDEF'.split('');
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
 }
 
 Array.prototype.insert = function (value, index) {

@@ -1,37 +1,37 @@
 @font-face {
     font-family: 'fontello';
     src: url('./font/fontello.eot?91248068');
-    src: url('./font/fontello.eot?91248068#iefix') format('embedded-opentype'),
-        url('./font/fontello.woff?91248068') format('woff'),
-        url('./font/fontello.ttf?91248068') format('truetype'),
-        url('./font/fontello.svg?91248068#fontello') format('svg');
+    src: url('./font/fontello.eot?91248068#iefix') format('embedded-opentype'), url('./font/fontello.woff?91248068') format('woff'), url('./font/fontello.ttf?91248068') format('truetype'), url('./font/fontello.svg?91248068#fontello') format('svg');
     font-weight: normal;
     font-style: normal;
 }
-    
+
+$background: #272625;
+$primary-color: #FFF;
+$secondary-color: #FFD700;
+$bar-color: #20ADEE;
+$select-background: #2C3E50;
+
 body {
-    background-color: #111;
-    color: #aaa;
+    background-color: $background;
+    color: $primary-color;
     font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;
 }
 
 a {
     text-decoration: none;
     cursor: pointer;
-    
     &.option {
-        border: 2px solid #111;
+        border: 2px solid $background;
         padding: 6px 8px;
         // margin-bottom: 10px;
-    
         &:hover {
-            border: 2px solid #FFF;
-            color: #FFD700;
+            border: 2px solid $primary-color;
+            color: $secondary-color;
         }
     }
-    
     &.selected {
-        border: 2px solid #FFF;
+        border: 2px solid $primary-color;
     }
 }
 
@@ -40,37 +40,46 @@ a {
     font-style: normal;
     font-weight: normal;
     font-size: 30px;
-    color: #FFF;
+    color: $primary-color;
     margin: 0 20px;
 }
 
-ul {
-    display: flex;
-    flex-direction: row;
-    margin: 0;
-    padding: 0;
-}
-ul li {
-    list-style-type: none;
-    // flex-grow: 1;
-}
+
 
 .controls {
     margin: 20px;
-        
     &__label {
-        color: #FFD700;
+        color: $secondary-color;
         float: left;
         width: 80px;
+    }
+    
+    &__algs {
+        span {
+            height: 40px;
+            line-height: 40px;
+        }
     }
     
     &__group {
         margin-top: 20px;
         display: flex;
+        
+        ul {
+            display: flex;
+            flex-direction: row;
+            margin: 0;
+            padding: 0
+            
+        }
+        
+        li {
+            list-style-type: none;
+            // flex-grow: 1;
+        }
     }
-    
     &__speed {
-        margin-left: 50px; 
+        margin-left: 50px;
     }
 }
 
@@ -84,7 +93,77 @@ ul li {
         // height: 100%;
         rect {
             // height: 13px;
-            fill: #20ADEE;
+            fill: $bar-color;
         }
     }
 }
+
+.select {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    font-size: 16px;
+    color: $primary-color;
+    width: 220px;
+    height: 40px;
+    .select-styled {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: $select-background;
+        padding: 8px 15px;
+        -moz-transition: all 0.2s ease-in;
+        -o-transition: all 0.2s ease-in;
+        -webkit-transition: all 0.2s ease-in;
+        transition: all 0.2s ease-in;
+        &:after {
+            content: "";
+            width: 0;
+            height: 0;
+            border: 7px solid transparent;
+            border-color: $primary-color transparent transparent transparent;
+            position: absolute;
+            top: 16px;
+            right: 10px;
+        }
+        &:hover, &:avtive, &.active {
+            background-color: $select-background;
+        }
+        &:active:after, &.active:after {
+            top: 9px;
+            border-color: transparent transparent $primary-color transparent;
+        }
+    }
+}
+
+
+
+.select-options {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    z-index: 999;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background-color: $select-background;
+    li {
+        margin: 0;
+        padding: 12px 0;
+        text-indent: 15px;
+        border-top: 1px solid $select-background;
+        // -moz-transition: all 0.15s ease-in;
+        // -o-transition: all 0.15s ease-in;
+        // -webkit-transition: all 0.15s ease-in;
+        // transition: all 0.15s ease-in;
+        &:hover {
+            color: $select-background;
+            background: $primary-color;
+        }
+    }
+}
+

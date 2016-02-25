@@ -6,15 +6,15 @@
   font-style: normal; }
 
 body {
-  background-color: #111;
-  color: #aaa;
+  background-color: #272625;
+  color: #FFF;
   font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; }
 
 a {
   text-decoration: none;
   cursor: pointer; }
   a.option {
-    border: 2px solid #111;
+    border: 2px solid #272625;
     padding: 6px 8px; }
     a.option:hover {
       border: 2px solid #FFF;
@@ -30,24 +30,25 @@ a {
   color: #FFF;
   margin: 0 20px; }
 
-ul {
-  display: flex;
-  flex-direction: row;
-  margin: 0;
-  padding: 0; }
-
-ul li {
-  list-style-type: none; }
-
 .controls {
   margin: 20px; }
   .controls__label {
     color: #FFD700;
     float: left;
     width: 80px; }
+  .controls__algs span {
+    height: 40px;
+    line-height: 40px; }
   .controls__group {
     margin-top: 20px;
     display: flex; }
+    .controls__group ul {
+      display: flex;
+      flex-direction: row;
+      margin: 0;
+      padding: 0; }
+    .controls__group li {
+      list-style-type: none; }
   .controls__speed {
     margin-left: 50px; }
 
@@ -58,3 +59,58 @@ ul li {
     width: 500px; }
     .bars svg rect {
       fill: #20ADEE; }
+
+.select {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  font-size: 16px;
+  color: #FFF;
+  width: 220px;
+  height: 40px; }
+  .select .select-styled {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #2C3E50;
+    padding: 8px 15px;
+    -moz-transition: all 0.2s ease-in;
+    -o-transition: all 0.2s ease-in;
+    -webkit-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in; }
+    .select .select-styled:after {
+      content: "";
+      width: 0;
+      height: 0;
+      border: 7px solid transparent;
+      border-color: #FFF transparent transparent transparent;
+      position: absolute;
+      top: 16px;
+      right: 10px; }
+    .select .select-styled:hover, .select .select-styled:avtive, .select .select-styled.active {
+      background-color: #2C3E50; }
+    .select .select-styled:active:after, .select .select-styled.active:after {
+      top: 9px;
+      border-color: transparent transparent #FFF transparent; }
+
+.select-options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  z-index: 999;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background-color: #2C3E50; }
+  .select-options li {
+    margin: 0;
+    padding: 12px 0;
+    text-indent: 15px;
+    border-top: 1px solid #2C3E50; }
+    .select-options li:hover {
+      color: #2C3E50;
+      background: #FFF; }
