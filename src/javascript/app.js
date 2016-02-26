@@ -6,6 +6,8 @@ const algsList = [
     "Bubble sort",
     "Selection sort",
     "Insertion sort",
+    "Shell sort",
+    "Comb sort",
     "Quicksort",
     "Merge sort",
     "Heapsort"
@@ -24,17 +26,18 @@ class Controller {
 
     createElements() {
         //MENU BUTTONSET
-        
+
         //Algorithm selector
-        $('.select').each(function () {
-            var $this = $(this), numberOfOptions = algsList.length;
-            
+        $('.select').each(function() {
+            var $this = $(this),
+                numberOfOptions = algsList.length;
+
             $this.append('<div class="select-styled"></div>');
 
             var styledSelect = $this.find('div.select-styled');
             var ramdomAlgs = algsList[getRandomInt(0, numberOfOptions - 1)];
             styledSelect.text(ramdomAlgs);
-            
+
             var list = $('<ul />', {
                 'class': 'select-options'
             }).insertAfter(styledSelect);
@@ -46,45 +49,45 @@ class Controller {
                     'data-pos': i
                 }).appendTo(list);
             }
-            
-            list.find("li:contains("+ styledSelect.text() +")").addClass('pos-active');
+
+            list.find("li:contains(" + styledSelect.text() + ")").addClass('pos-active');
             var listItems = list.children('li');
-            
-            styledSelect.click(function (e) {
+
+            styledSelect.click(function(e) {
                 e.stopPropagation();
-                $('div.select-styled.active').each(function () {
+                $('div.select-styled.active').each(function() {
                     $(this).removeClass('active').next('ul.select-options').hide();
                 });
                 $(this).toggleClass('active').next('ul.select-options').toggle();
             });
 
-            listItems.click(function (e) {
+            listItems.click(function(e) {
                 e.stopPropagation();
                 styledSelect.text($(this).text()).removeClass('active');
                 list.hide();
             });
-  
+
             $(document).click(function() {
                 styledSelect.removeClass('active');
                 list.hide();
             });
 
         });
-        
+
         //Size selector
         size.forEach((el) => {
             d3.select("#size").append("li").
-                append("a").
-                attr('class', 'option').
-                text(el);
+            append("a").
+            attr('class', 'option').
+            text(el);
         });
-        
+
         //Speed selector
         speed.forEach((el, i) => {
             d3.select("#speed").
-                append("li").append("a").attr('data-speed', i * 1.5).
-                attr('class', 'option').
-                text(el);
+            append("li").append("a").attr('data-speed', i * 1.5).
+            attr('class', 'option').
+            text(el);
         });
 
         $("a:contains(" + this.size + ")").addClass('selected');
@@ -105,7 +108,7 @@ class Controller {
             $('#speed a').removeClass('selected');
             $(evt.target).addClass('selected');
         });
-        
+
     }
 
     getSize() {
@@ -131,7 +134,7 @@ class Bars {
     }
 
     renderData(data) {
-        console.log('rendering. . .', this.root);
+        // console.log('rendering. . .', this.root);
         // console.log(data);
         this.bars = data;
         var size = this.size;
@@ -165,14 +168,14 @@ class Bars {
             .attr("class", 'bar')
             .attr("width", 0) // initial width of 0 for transition
             .attr("height", rectHeight)
-        // .attr("fill", getRandomColor())
-        // .attr("x", 2) 
-            .attr("y", function (d, i) {
+            // .attr("fill", getRandomColor())
+            // .attr("x", 2) 
+            .attr("y", function(d, i) {
                 return i * (rectHeight + rectMargin);
             })
-        // .transition()
-        // .duration(500)
-            .attr("width", function (d) {
+            // .transition()
+            // .duration(500)
+            .attr("width", function(d) {
                 return d / (max / width); // width based on scale
             });
 
@@ -205,7 +208,7 @@ class GraphicalSort {
         // this.size = controls.size;
 
         // Set default algorithms
-        this.sortMenu = [bubbleSort, selectionSort, insertionSort, quickSort, mergeSort, heapSort];
+        this.sortMenu = [bubbleSort, selectionSort, insertionSort, shellSort, combSort, quickSort, mergeSort, heapSort];
         // this.pos = [0];
 
         this.setEvents();
@@ -242,7 +245,7 @@ class GraphicalSort {
         console.log('reloading');
         // console.log(this.getPos('#first_algs'));
         // console.log(this.getPos('#second_algs'));
-        
+
         this.tasks.clean();
         this.tasks2.clean();
 
@@ -265,7 +268,7 @@ class GraphicalSort {
 
     start() {
         console.log('starting');
-                
+
         // var arr = [0, 1, 2, 3, 4, 5];
         // var random = shuffle(arr);
 
@@ -273,22 +276,21 @@ class GraphicalSort {
             () => {
                 this.sortMenu[this.getPos('#first_algs')](this.bars, this.tasks);
                 // this.sortMenu[3](this.bars2, this.tasks2);
-            },
-            () => {
+            }, () => {
                 this.sortMenu[this.getPos('#second_algs')](this.bars2, this.tasks2);
             }
         ]);
-            
-       /* 
-        setTimeout(() => {
-            this.sortMenu[this.getPos('#first_algs')](this.bars, this.tasks);
-        }, 0);
+
+        /* 
+         setTimeout(() => {
+             this.sortMenu[this.getPos('#first_algs')](this.bars, this.tasks);
+         }, 0);
        
-        setTimeout(() => {
-            this.sortMenu[this.getPos('#second_algs')](this.bars2, this.tasks2);
-        }, 0);
-        */
-        
+         setTimeout(() => {
+             this.sortMenu[this.getPos('#second_algs')](this.bars2, this.tasks2);
+         }, 0);
+         */
+
     }
 
 }
@@ -373,12 +375,12 @@ function bubbleSort(barObj, taskObj) {
         }
     }
     //end main
-    
+
     console.log(taskObj.tasks.length);
     console.log(values);
     taskObj.pushValues(values);
     taskObj.processItems();
-    
+
 }
 
 function selectionSort(barObj, taskObj) {
@@ -534,14 +536,14 @@ function mergeSort(barObj, taskObj) {
             }
         }
     }
-    
+
     _mergeSort(values);
 
     //end main
 
     //test
 
-	/*	function _mergeSort(array, first, last) {
+    /*	function _mergeSort(array, first, last) {
 			// var array = values;
 			// console.log(array);
 			taskObj.pushValues(values);
@@ -642,8 +644,86 @@ function heapSort(barObj, taskObj) {
     console.log(values);
     taskObj.pushValues(values);
     taskObj.processItems();
-    
+
 }
+
+function shellSort(barObj, taskObj) {
+    console.log('shell sort starting', barObj.bars);
+    var values = barObj.bars;
+
+    //main
+
+    for (var h = values.length; h = parseInt(h / 2);) {
+        taskObj.pushValues(values);
+        for (var i = h; i < values.length; i++) {
+            taskObj.pushValues(values);
+            var k = values[i];
+            for (var j = i; j >= h && k < values[j - h]; j -= h) {
+                taskObj.pushValues(values);
+                values[j] = values[j - h];
+            }
+
+            values[j] = k;
+        }
+    }
+
+    //end main
+
+    console.log(taskObj.tasks.length);
+    console.log(values);
+    taskObj.pushValues(values);
+    taskObj.processItems();
+
+}
+
+function combSort(barObj, taskObj) {
+    console.log('comb sort starting', barObj.bars);
+    var values = barObj.bars;
+
+    //main
+
+    /*    var interval = Math.floor(values.length / 1.3);
+        while (interval > 0) {
+            // taskObj.pushValues(values);
+            for (var i = 0; i + interval < values.length; i += 1) {
+                // taskObj.pushValues(values);
+                if (values[i] > values[i + interval]) {
+                    var small = values[i + interval];
+                    values[i + interval] = values[i];
+                    values[i] = small;
+                }
+            }
+            interval = Math.floor(interval / 1.3);
+        }*/
+
+    //end main
+
+    //test
+    var gap = values.length, i, j;
+    while (gap > 1) {
+        taskObj.pushValues(values);
+        gap = gap / 1.247340350103979 | 0; // Trial and error
+        if (gap == 9 || gap == 10) {
+            gap = 11;
+        }
+
+        for (i = 0; i < values.length - gap + 1; i++) {
+            taskObj.pushValues(values);
+            j = i + gap;
+            if (values[i] > values[j]) {
+                [values[i], values[j]] = [values[j], values[i]];
+                // swap(a, i, j);
+            }
+        }
+    }
+    //end test
+    console.log(taskObj.tasks.length);
+    console.log(values);
+    taskObj.pushValues(values);
+    taskObj.processItems();
+
+}
+
 
 var gs = new GraphicalSort();
 

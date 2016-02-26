@@ -10,7 +10,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 // console.log(async);
 
-var algsList = ["Bubble sort", "Selection sort", "Insertion sort", "Quicksort", "Merge sort", "Heapsort"];
+var algsList = ["Bubble sort", "Selection sort", "Insertion sort", "Shell sort", "Comb sort", "Quicksort", "Merge sort", "Heapsort"];
 var size = [5, 10, 20, 30, 50, 70, 100];
 var speed = ['5x', '4x', '3x', '2x', '1x'];
 
@@ -144,7 +144,7 @@ var Bars = function () {
         value: function renderData(data) {
             var _Math2;
 
-            console.log('rendering. . .', this.root);
+            // console.log('rendering. . .', this.root);
             // console.log(data);
             this.bars = data;
             var size = this.size;
@@ -220,7 +220,7 @@ var GraphicalSort = function () {
         // this.size = controls.size;
 
         // Set default algorithms
-        this.sortMenu = [bubbleSort, selectionSort, insertionSort, quickSort, mergeSort, heapSort];
+        this.sortMenu = [bubbleSort, selectionSort, insertionSort, shellSort, combSort, quickSort, mergeSort, heapSort];
         // this.pos = [0];
 
         this.setEvents();
@@ -574,45 +574,39 @@ function mergeSort(barObj, taskObj) {
     //test
 
     /*	function _mergeSort(array, first, last) {
-    		// var array = values;
-    		// console.log(array);
-    		taskObj.pushValues(values);
-    
-    		first = (first === undefined) ? 0 : first;
-    		last = (last === undefined) ? array.length - 1 : last;
-    		if (last - first < 1) {
-    			return
-    		}
-    		var middle = Math.floor((first + last) / 2);
-    		_mergeSort(array, first, middle);
-    		_mergeSort(array, middle + 1, last);
-    
-    
-    		var f = first;
-    		var m = middle;
-    
-    		while (f <= m && m + 1 <= last) {
-    			taskObj.pushValues(values);
-    			if (array[f] >= array[m + 1]) {
-    				// array.insertBefore(m + 1, f);
-    
-    				var from = m + 1, to = f;
-    				// var temp = array[from];
-    				array.insert(array[from], to)
-    				// for (var i = array.length - 1; to <= i; i--) {
-    				// 	// taskObj.pushValues(values);
-    				// 	array[i + 1] = array[i];
-    				// }
-    				// array[to] = temp;
-    				if (to < from) {
-    					array.splice(from + 1, 1);
-    				}
-    
-    				m++;
-    			}
-    			f++;
-    		}
-    	}*/
+    // var array = values;
+    // console.log(array);
+    taskObj.pushValues(values);
+    	first = (first === undefined) ? 0 : first;
+    last = (last === undefined) ? array.length - 1 : last;
+    if (last - first < 1) {
+    return
+    }
+    var middle = Math.floor((first + last) / 2);
+    _mergeSort(array, first, middle);
+    _mergeSort(array, middle + 1, last);
+    			var f = first;
+    var m = middle;
+    	while (f <= m && m + 1 <= last) {
+    taskObj.pushValues(values);
+    if (array[f] >= array[m + 1]) {
+    	// array.insertBefore(m + 1, f);
+    			var from = m + 1, to = f;
+    	// var temp = array[from];
+    	array.insert(array[from], to)
+    	// for (var i = array.length - 1; to <= i; i--) {
+    	// 	// taskObj.pushValues(values);
+    	// 	array[i + 1] = array[i];
+    	// }
+    	// array[to] = temp;
+    	if (to < from) {
+    		array.splice(from + 1, 1);
+    	}
+    			m++;
+    }
+    f++;
+    }
+    }*/
     //end test
 
     console.log(taskObj.tasks.length);
@@ -673,6 +667,85 @@ function heapSort(barObj, taskObj) {
     _heapSort(values);
     //end main
 
+    console.log(taskObj.tasks.length);
+    console.log(values);
+    taskObj.pushValues(values);
+    taskObj.processItems();
+}
+
+function shellSort(barObj, taskObj) {
+    console.log('shell sort starting', barObj.bars);
+    var values = barObj.bars;
+
+    //main
+
+    for (var h = values.length; h = parseInt(h / 2);) {
+        taskObj.pushValues(values);
+        for (var i = h; i < values.length; i++) {
+            taskObj.pushValues(values);
+            var k = values[i];
+            for (var j = i; j >= h && k < values[j - h]; j -= h) {
+                taskObj.pushValues(values);
+                values[j] = values[j - h];
+            }
+
+            values[j] = k;
+        }
+    }
+
+    //end main
+
+    console.log(taskObj.tasks.length);
+    console.log(values);
+    taskObj.pushValues(values);
+    taskObj.processItems();
+}
+
+function combSort(barObj, taskObj) {
+    console.log('comb sort starting', barObj.bars);
+    var values = barObj.bars;
+
+    //main
+
+    /*    var interval = Math.floor(values.length / 1.3);
+        while (interval > 0) {
+            // taskObj.pushValues(values);
+            for (var i = 0; i + interval < values.length; i += 1) {
+                // taskObj.pushValues(values);
+                if (values[i] > values[i + interval]) {
+                    var small = values[i + interval];
+                    values[i + interval] = values[i];
+                    values[i] = small;
+                }
+            }
+            interval = Math.floor(interval / 1.3);
+        }*/
+
+    //end main
+
+    //test
+    var gap = values.length,
+        i,
+        j;
+    while (gap > 1) {
+        taskObj.pushValues(values);
+        gap = gap / 1.247340350103979 | 0; // Trial and error
+        if (gap == 9 || gap == 10) {
+            gap = 11;
+        }
+
+        for (i = 0; i < values.length - gap + 1; i++) {
+            taskObj.pushValues(values);
+            j = i + gap;
+            if (values[i] > values[j]) {
+                // swap(a, i, j);
+                var _ref5 = [values[j], values[i]];
+                values[i] = _ref5[0];
+                values[j] = _ref5[1];
+            }
+        }
+    }
+    //end test
     console.log(taskObj.tasks.length);
     console.log(values);
     taskObj.pushValues(values);
