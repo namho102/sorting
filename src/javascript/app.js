@@ -395,6 +395,7 @@ function selectionSort(barObj, taskObj) {
     //main
     var minIndex, tmp;
     for (var i = 0; i < values.length - 1; i++) {
+        taskObj.pushValues(values);
         minIndex = i;
         for (var j = i + 1; j < values.length; j++) {
             taskObj.pushValues(values);
@@ -427,6 +428,7 @@ function insertionSort(barObj, taskObj) {
 
     //main
     for (var i = 0; i < values.length; i++) {
+        taskObj.pushValues(values);
         var k = values[i];
         for (var j = i; j > 0 && k < values[j - 1]; j--) {
             taskObj.pushValues(values);
@@ -452,7 +454,6 @@ function quickSort(barObj, taskObj) {
         taskObj.pushValues(values);
 
         if (left < right) {
-            // var pivot = values[left + Math.floor((right - right) / 2)],
             var pivot = values[left + ~~((right - right) / 2)],
                 left_new = left,
                 right_new = right;
@@ -502,7 +503,6 @@ function mergeSort(barObj, taskObj) {
         taskObj.pushValues(alist);
 
         if (alist.length > 1) {
-            // var mid = Math.floor(alist.length / 2);
             var mid = ~~(alist.length / 2);
             var lefthalf = alist.slice(0, mid),
                 righthalf = alist.slice(mid);
@@ -619,7 +619,6 @@ function heapSort(barObj, taskObj) {
     function putArrayInHeapOrder(arr) {
         var i;
         i = arr.length / 2 - 1;
-        // i = Math.floor(i);
         i = ~~i;
         while (i >= 0) {
             taskObj.pushValues(values);

@@ -17,14 +17,14 @@ function generateData(size) {
 }
 
 function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    return ~ ~(Math.random() * (max - min + 1)) + min;
 }
 
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';
     for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
+        color += letters[~ ~(Math.random() * 16)];
     }
     return color;
 }
@@ -36,7 +36,7 @@ function shuffle(arr) {
 
     while (0 !== currentIndex) {
 
-        randomIndex = Math.floor(Math.random() * currentIndex);
+        randomIndex = ~ ~(Math.random() * currentIndex);
         currentIndex -= 1;
 
         temporaryValue = arr[currentIndex];
