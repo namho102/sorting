@@ -246,11 +246,14 @@ class GraphicalSort {
         // console.log(this.getPos('#first_algs'));
         // console.log(this.getPos('#second_algs'));
 
-        this.tasks.clean();
-        this.tasks2.clean();
+        // this.tasks.clean();
+        // this.tasks2.clean();
 
-        this.tasks.cancel();
-        this.tasks2.cancel();
+        // this.tasks.cancel();
+        // this.tasks2.cancel();
+
+        this.tasks.clean().cancel();
+        this.tasks2.clean().cancel();
 
         var newSize = this.controller.getSize();
         var newData = generateData(newSize);
@@ -332,6 +335,7 @@ class Task {
 
     cancel() {
         clearTimeout(this.timeoutID);
+        return this;
     }
 
     pushValues(values) {
@@ -347,6 +351,7 @@ class Task {
 
     clean() {
         this.tasks = [];
+        return this;
     }
 
 }
@@ -447,7 +452,8 @@ function quickSort(barObj, taskObj) {
         taskObj.pushValues(values);
 
         if (left < right) {
-            var pivot = values[left + Math.floor((right - right) / 2)],
+            // var pivot = values[left + Math.floor((right - right) / 2)],
+            var pivot = values[left + ~~((right - right) / 2)],
                 left_new = left,
                 right_new = right;
 
@@ -496,7 +502,8 @@ function mergeSort(barObj, taskObj) {
         taskObj.pushValues(alist);
 
         if (alist.length > 1) {
-            var mid = Math.floor(alist.length / 2);
+            // var mid = Math.floor(alist.length / 2);
+            var mid = ~~(alist.length / 2);
             var lefthalf = alist.slice(0, mid),
                 righthalf = alist.slice(mid);
 
@@ -612,7 +619,8 @@ function heapSort(barObj, taskObj) {
     function putArrayInHeapOrder(arr) {
         var i;
         i = arr.length / 2 - 1;
-        i = Math.floor(i);
+        // i = Math.floor(i);
+        i = ~~i;
         while (i >= 0) {
             taskObj.pushValues(values);
             siftElementDownHeap(arr, i, arr.length);
