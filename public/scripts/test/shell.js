@@ -52,7 +52,7 @@ function shellSort(values) {
     //end main
 }
 
-var array = generateData(1000000);
+var array = generateData(10000000);
 var date1 = new Date();
 
 // console.log(array);
@@ -61,7 +61,7 @@ shellSort(array);
 
 var date2 = new Date();
 var diff = date2 - date1;
-fs.appendFile('shell_100000.txt', diff + os.EOL, 'utf8', function (err) {
+fs.appendFile('shell_10000000.txt', diff + os.EOL, 'utf8', function (err) {
     if (err) throw err;
     console.log('It\'s saved!');
 });

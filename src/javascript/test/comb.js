@@ -50,7 +50,7 @@ function combSort(values) {
     }
 }
 
-var array = generateData(1000000);
+var array = generateData(10000000);
 var date1 = new Date();
 
 // console.log(array);
@@ -59,7 +59,7 @@ combSort(array);
 
 var date2 = new Date();
 var diff = date2 - date1;
-fs.appendFile('comb_1000000.txt', diff + os.EOL, 'utf8', (err) => {
+fs.appendFile('comb_10000000.txt', diff + os.EOL, 'utf8', (err) => {
     if (err) throw err;
     console.log('It\'s saved!');
 });
