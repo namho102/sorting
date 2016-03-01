@@ -170,12 +170,12 @@ class Bars {
             .attr("height", rectHeight)
             // .attr("fill", getRandomColor())
             // .attr("x", 2) 
-            .attr("y", function(d, i) {
+            .attr("y", (d, i) => {
                 return i * (rectHeight + rectMargin);
             })
             // .transition()
             // .duration(500)
-            .attr("width", function(d) {
+            .attr("width", (d) => {
                 return d / (max / width); // width based on scale
             });
 
