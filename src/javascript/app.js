@@ -570,7 +570,6 @@ function mergeSort(barObj, taskObj) {
 			}
 		}*/
 
-
     _mergeSort(values);
     //end test
 
