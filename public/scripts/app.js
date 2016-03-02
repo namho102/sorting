@@ -206,9 +206,14 @@ var GraphicalSort = function () {
                 _this2.reload();
             });
 
-            $('#start').click(function () {
+            $('#process').click(function () {
                 // this.start();   
                 _this2.runStep();
+            });
+
+            $('#start').click(function () {
+                _this2.start();
+                // this.runStep();
             });
 
             $('#algs a').click(function (evt) {
@@ -243,17 +248,19 @@ var GraphicalSort = function () {
         key: "start",
         value: function start() {
             console.log('starting');
+
             // console.log(this.getPos());
             // bubbleSort(this.bars, this.tasks);
             this.sortMenu[this.getPos()](this.bars, this.tasks);
-            // this.tasks.processItems();
+            this.tasks.processItems();
         }
     }, {
         key: "runStep",
         value: function runStep() {
             var queue = this.tasks;
             if (queue.tasks.length == 0) {
-                this.start();
+                // this.start();
+                this.sortMenu[this.getPos()](this.bars, this.tasks);
                 // console.log(queue.tasks);
             }
 
@@ -429,7 +436,7 @@ function insertionSort(barObj, taskObj) {
     for (var i = 0; i < values.length; i++) {
         var k = values[i];
         for (var j = i; j > 0 && k < values[j - 1]; j--) {
-
+            taskObj.pushValues([k, values[j - 1]]);
             values[j] = values[j - 1];
             taskObj.pushValues(values);
         }

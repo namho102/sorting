@@ -196,10 +196,15 @@ class GraphicalSort {
         $('#reload').click(() => {
             this.reload();
         });
-
-        $('#start').click(() => {
+        
+        $('#process').click(() => {
             // this.start();    
             this.runStep();
+        });
+        
+        $('#start').click(() => {
+            this.start();    
+            // this.runStep();
         });
 
         $('#algs a').click((evt) => {
@@ -231,17 +236,19 @@ class GraphicalSort {
     }
 
     start() {
-        console.log('starting');       
+        console.log('starting');
+               
         // console.log(this.getPos());
         // bubbleSort(this.bars, this.tasks);
         this.sortMenu[this.getPos()](this.bars, this.tasks);
-        // this.tasks.processItems();
+        this.tasks.processItems();
     }
 
     runStep() {
         var queue = this.tasks;
         if (queue.tasks.length == 0) {
-            this.start();
+            // this.start();
+            this.sortMenu[this.getPos()](this.bars, this.tasks);
             // console.log(queue.tasks);
         }
 
@@ -401,7 +408,7 @@ function insertionSort(barObj, taskObj) {
     for (var i = 0; i < values.length; i++) {
         var k = values[i];
         for (var j = i; j > 0 && k < values[j - 1]; j--) {
-
+            taskObj.pushValues([k, values[j - 1]]);
             values[j] = values[j - 1];
             taskObj.pushValues(values);
         }
