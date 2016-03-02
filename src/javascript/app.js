@@ -1,250 +1,304 @@
 const algsList = [
-	"Bubble",
-	"Selection",
-	"Insertion",
-	"Quick",
-	"Merge",
-	"Heap"
+    "Bubble",
+    "Selection",
+    "Insertion",
+    "Quick",
+    "Merge",
+    "Heap"
 ];
 const size = [5, 10, 20, 30, 50, 70, 100];
 const speed = ['1x', '2x', '3x', '4x', '5x'];
 
 class Controller {
-	constructor() {
-		this.size = 20;
-		this.speed = '2x';
+    constructor() {
+        this.size = 20;
+        this.speed = '2x';
 
-		this.createElements();
-		this.setEvents();
-	}
+        this.createElements();
+        this.setEvents();
+    }
 
-	createElements() {
-		//MENU BUTTONSET
-		algsList.forEach((el, i) => {
-			d3.select("#algs").append("li").
-			append("a").
-			attr('data-pos', i).
-			attr('class', 'option').
-			text(el);
-		});
+    createElements() {
+        //MENU BUTTONSET
+        algsList.forEach((el, i) => {
+            d3.select("#algs").append("li").
+                append("a").
+                attr('data-pos', i).
+                attr('class', 'option').
+                text(el);
+        });
 
-		size.forEach((el) => {
-			d3.select("#size").append("li").
-			append("a").
-			attr('class', 'option').
-			text(el);
-		});
+        size.forEach((el) => {
+            d3.select("#size").append("li").
+                append("a").
+                attr('class', 'option').
+                text(el);
+        });
 
-		speed.forEach((el, i) => {
-			d3.select("#speed").
-			append("li").append("a").attr('data-speed', i * 1.5).
-			attr('class', 'option').
-			text(el);
-		});
+        speed.forEach((el, i) => {
+            d3.select("#speed").
+                append("li").append("a").attr('data-speed', i * 2).
+                attr('class', 'option').
+                text(el);
+        });
 
-		$("a:contains(" + this.size + ")").addClass('selected');
-		$("a:contains(" + this.speed + ")").addClass('selected');
-		$("#algs").find('a').first().addClass('selected');
+        $("a:contains(" + this.size + ")").addClass('selected');
+        $("a:contains(" + this.speed + ")").addClass('selected');
+        $("#algs").find('a').first().addClass('selected');
 
-	}
+    }
 
-	setEvents() {
-		$('#size a').click((evt) => {
-			this.size = $(evt.target).text();
-			$('#size a').removeClass('selected');
-			$(evt.target).addClass('selected');
-		});
-        
+    setEvents() {
+        $('#size a').click((evt) => {
+            this.size = $(evt.target).text();
+            $('#size a').removeClass('selected');
+            $(evt.target).addClass('selected');
+        });
+
         $('#speed a').click((evt) => {
-			this.size = $(evt.target).text();
-			$('#speed a').removeClass('selected');
-			$(evt.target).addClass('selected');
-		});
+            this.size = $(evt.target).text();
+            $('#speed a').removeClass('selected');
+            $(evt.target).addClass('selected');
+        });
 
-	}
+    }
 
-	getSize() {
-		return $('#size').find(".selected").text();
-	}
+    getSize() {
+        return $('#size').find(".selected").text();
+    }
 }
 
 class Bars {
-	constructor(size, root) {
-		console.log('wtf');
-		this.size = size;
-		this.root = root;
-		this.bars = shuffle(generateArray(this.size));
+    constructor(size, root) {
+        console.log('wtf');
+        this.size = size;
+        this.root = root;
+        this.bars = shuffle(generateArray(this.size));
+        this.colors = [];
+        //initial state
+        this.selector = d3.select(root).append("svg");
+        // this.selector.append("svg").attr('width', '100%');
+        this.renderData(this.bars);
+    }
 
-		//initial state
-		this.selector = d3.select(root).append("svg");
-		// this.selector.append("svg").attr('width', '100%');
-		this.renderData(this.bars);
-	}
 
-	getMax() {
-		return Math.max(...this.bars);
-	}
 
-	renderData(data) {
-		console.log('rendering. . .');
-		// console.log(data);
-		this.bars = data;
-		var size = this.size;
-		// var data = this.bars;
+    getMax() {
+        return Math.max(...this.bars);
+    }
 
-		// var svg = this.selector.append("svg").attr('width', '100%');
-		// var svg = d3.select('#bars').append("svg").attr('width', '100%');
-		var svg = this.selector;
-		svg.selectAll("*").remove();
+    renderData(data, time) {
+        console.log('rendering. . .');
+        // console.log(data);
+        this.bars = data;
+        var size = this.size;
+        // var data = this.bars;
 
-		var width, height, rectHeight, rectMargin, max;
-		// width = d3.select(iElement[0])[0][0].offsetWidth - 5;
-		width = 450;
-		height = 450;
-		// rectHeight = 13;
-		rectMargin = 1;
-		// height = size * (rectHeight + rectMargin);
-		rectHeight = height / size - rectMargin;
+        // var svg = this.selector.append("svg").attr('width', '100%');
+        // var svg = d3.select('#bars').append("svg").attr('width', '100%');
+        var svg = this.selector;
+        svg.selectAll("*").remove();
 
-		max = Math.max(...data);
+        var width, height, rectHeight, rectMargin, max;
+        var color = d3.rgb("blue");
+        // width = d3.select(iElement[0])[0][0].offsetWidth - 5;
+        width = 450;
+        height = 450;
+        // rectHeight = 13;
+        rectMargin = 1;
+        // height = size * (rectHeight + rectMargin);
+        rectHeight = height / size - rectMargin;
 
-		svg.attr('height', height);
+        max = Math.max(...data);
 
-		//create the rectangles for the bar chart
-		var rects = svg.selectAll("rect").data(data);
+        svg.attr('height', height);
 
-		// svg.selectAll("rect")
-		//     .data(data)
-		rects.enter()
-			.append("rect")
-			.attr("class", 'bar')
-			.attr("width", 0) // initial width of 0 for transition
-			.attr("height", rectHeight)
-			// .attr("fill", getRandomColor())
-			// .attr("x", 2) 
-			.attr("y", function(d, i) {
-				return i * (rectHeight + rectMargin);
-			})
-			// .transition()
-			// .duration(500)
-			.attr("width", function(d) {
-				return d / (max / width); // width based on scale
-			});
+        //create the rectangles for the bar chart
+        var rects = svg.selectAll("rect").data(data);
 
-		rects.exit().remove();
-		// this.selector.selectAll().exit().remove(); 
-	}
+        // svg.selectAll("rect")
+        //     .data(data)
+        rects.enter()
+            .append("rect")
+            .attr("class", 'bar')
+            .attr("width", 0) // initial width of 0 for transition
+            .attr("height", rectHeight)
+            .attr("data-val", (d) => {
+                return d;
+            })
 
-	update(size, data) {
-		this.size = size;
-		this.bars = data;
-	}
+            .attr("fill", (d, i) => {
+                // if(!time) {
+                //     var color = '#' + Math.floor(Math.random()*16777215).toString(16);
+                //     this.colors[this.colors.length] = color;
+                //     return color;
+                // }
+                // return this.colors[i]; 
+                return '#20ADEE';
 
-	destroy() {
+            })
+            .attr("y", (d, i) => {
+                return i * (rectHeight + rectMargin);
+            })
+        // .transition()
+        // .duration(500)
+            .attr("width", (d) => {
+                return d / (max / width); // width based on scale
+            });
 
-	}
+        rects.exit().remove();
+        // this.selector.selectAll().exit().remove(); 
+    }
+
+    update(size, data) {
+        this.size = size;
+        this.bars = data;
+    }
+
+    highlight(elements) {
+        // var rects = $('#bars').find('rect');
+        console.log('hight hihi');
+        var c = '#B1D5E5';
+        for (var i = 0; i < elements.length; i++) {
+            $("rect[data-val=" + elements[i] + "]").css('fill', c);
+        }
+    }
+
+    destroy() {
+
+    }
 }
 
 class GraphicalSort {
-	constructor() {
-		//Controller
-		this.controller = new Controller();
+    constructor() {
+        //Controller
+        this.controller = new Controller();
 
-		//Bars
-		this.bars = new Bars(this.controller.size, '#bars');
+        //Bars
+        this.bars = new Bars(this.controller.size, '#bars');
 
-		//Tasks
-		this.tasks = new Task(this.bars);
-		// this.size = controls.size;
+        //Tasks
+        this.tasks = new Task(this.bars);
+        // this.size = controls.size;
 		
-		// Set default algorithms
-		this.sortMenu = [bubbleSort, selectionSort, insertionSort, quickSort, mergeSort, heapSort];
-		this.pos = 0;
+        // Set default algorithms
+        this.sortMenu = [bubbleSort, selectionSort, insertionSort, quickSort, mergeSort, heapSort];
+        this.pos = 0;
 
-		this.setEvents();
-	}
+        this.setEvents();
+    }
 
-	setEvents() {
-		$('.controls__group').click(() => {
-			this.reload();
-		});
+    setEvents() {
+        $('.controls__group').click(() => {
+            this.reload();
+        });
 
-		$('#reload').click(() => {
-			this.reload();
-		});
+        $('#reload').click(() => {
+            this.reload();
+        });
 
-		$('#start').click(() => {
-			this.start();
-		});
+        $('#start').click(() => {
+            // this.start();    
+            this.runStep();
+        });
 
-		$('#algs a').click((evt) => {
-			this.algs = $(evt.target).data('pos');
-			// console.log(this.algs);
-			$('#algs a').removeClass('selected');
-			$(evt.target).addClass('selected');
+        $('#algs a').click((evt) => {
+            this.algs = $(evt.target).data('pos');
+            // console.log(this.algs);
+            $('#algs a').removeClass('selected');
+            $(evt.target).addClass('selected');
 
-			this.reload();
-		});
-	}
+            this.reload();
+        });
+    }
 
-	getPos() {
-		return $('#algs').find(".selected").data('pos');
-	}
+    getPos() {
+        return $('#algs').find(".selected").data('pos');
+    }
 
-	reload() {
-		console.log('reloading');
+    reload() {
+        console.log('reloading');
+        this.tasks.clean();
         this.tasks.cancel();
-        
-		var newSize = this.controller.getSize();
-		var newData = generateData(newSize);
-		console.log(newData);
-		// console.log(newSize);
-		this.bars.update(newSize, newData);
-		this.bars.renderData(newData);
 
-	}
+        var newSize = this.controller.getSize();
+        var newData = generateData(newSize);
+        console.log(newData);
+        // console.log(newSize);
+        this.bars.update(newSize, newData);
+        this.bars.renderData(newData);
 
-	start() {
-		console.log('starting');
-		this.tasks.clean();
-		// console.log(this.getPos());
-		// bubbleSort(this.bars, this.tasks);
-		this.sortMenu[this.getPos()](this.bars, this.tasks);
-	}
+    }
 
+    start() {
+        console.log('starting');       
+        // console.log(this.getPos());
+        // bubbleSort(this.bars, this.tasks);
+        this.sortMenu[this.getPos()](this.bars, this.tasks);
+        // this.tasks.processItems();
+    }
+
+    runStep() {
+        var queue = this.tasks;
+        if (queue.tasks.length == 0) {
+            this.start();
+            // console.log(queue.tasks);
+        }
+
+        queue.popItem();
+    }
 }
 
 class Task {
-	constructor(bars) {
-		this.bars = bars;
-		this.tasks = [];
-		this.delay = 40;
-        
+    constructor(bars) {
+        this.bars = bars;
+        this.tasks = [];
+        this.delay = 40;
+
         this.timeoutID = undefined;
-	}
+    }
 
-	processItems() {
-		// var delay = this.delay;
-		var bars = this.bars;
-		var queue = this.tasks;
-		var self = this;
+    processItems() {
+        // var delay = this.delay;
+        var bars = this.bars;
+        var queue = this.tasks;
+        var self = this;
 
-		function processNextBatch() {
-			var nextItem;
-			nextItem = queue.shift();
-			if (!nextItem) return;
-			// console.log(nextItem);
-			bars.renderData(nextItem);
-			// processItem(nextItem);
+        function processNextBatch() {
+            var nextItem;
+            nextItem = queue.shift();
+            if (!nextItem) return;
+            // console.log(nextItem);
+            if (nextItem.length == bars.bars.length) {
+                bars.renderData(nextItem, true);
+            }
+            else {
+                bars.highlight(nextItem);
+            }
+            
+            // bars.highlight(nextItem);
+            // processItem(nextItem);
             // console.log(self.getDelay());
             
             self.timeoutID = setTimeout(processNextBatch, self.getDelay());
             // self._setTimeout(processNextBatch);
-			// setTimeout(processNextBatch, self.getDelay());
-			// setTimeout(processNextBatch, delay);
-		}
-		processNextBatch();
-	}
+            // setTimeout(processNextBatch, self.getDelay());
+            // setTimeout(processNextBatch, delay);
+        }
+        processNextBatch();
+    }
+
+    popItem() {
+        var nextItem = this.tasks.shift();
+        // console.log(this.tasks);
+        if (nextItem.length == this.bars.bars.length) {
+            this.bars.renderData(nextItem, true);
+        }
+        else {
+            this.bars.highlight(nextItem);
+        }
+        // this.bars.renderData(nextItem);
+    }
     
     // _setTimeout(func) {
     //     setTimeout(func, this.getDelay());
@@ -254,214 +308,226 @@ class Task {
         clearTimeout(this.timeoutID);
     }
 
-	pushValues(values) {
-		var tempVar = values.slice(0); //creating not copying, !IMPORTANT !FUCKING ERROR
-		this.tasks.push(tempVar);
-		// console.log(this.tasks);
-	}
-    
+    pushValues(values) {
+        var tempVar = values.slice(0); //creating not copying, !IMPORTANT !FUCKING ERROR
+        this.tasks.push(tempVar);
+        // console.log(this.tasks);
+    }
+
     getDelay() {
-        var speed = $('#speed').find(".selected").data('speed'); 
+        var speed = $('#speed').find(".selected").data('speed');
         return speed * 10;
     }
-    
-	clean() {
-		this.tasks = [];
-	}
+
+    clean() {
+        this.tasks = [];
+    }
 
 }
 
 //Sorting Functions
 
 function bubbleSort(barObj, taskObj) {
-	var values = barObj.bars;
+    var values = barObj.bars;
 
-	//main
-	var done = false;
-	while (!done) {
-		done = true;
-		for (var i = 1; i < values.length; i++) {
-			taskObj.pushValues(values);
+    //main
+    var done = false;
+    while (!done) {
+        done = true;
+        for (var i = 1; i < values.length; i++) {
+            // taskObj.pushValues(values);
 
-			if (values[i - 1] > values[i]) {
-				done = false;
-				[values[i - 1], values[i]] = [values[i], values[i - 1]];
+            if (values[i - 1] > values[i]) {
+                // barObj.hightlight([values[i - 1], values[i]]);
+                taskObj.pushValues([values[i - 1], values[i]]);
+                done = false;
+                [values[i - 1], values[i]] = [values[i], values[i - 1]];
 
                 // var tempValues = values.slice(0);
-				// taskObj.pushValues(tempValues);
-				// taskObj.pushValues(values);
-			}
-		}
-	}
-	//end main
-
-	taskObj.pushValues(values);
-	console.log(taskObj.tasks.length);
-	taskObj.processItems();
-	console.log(values);
+                // taskObj.pushValues(tempValues);
+                taskObj.pushValues(values);
+            }
+        }
+    }
+    //end main
+    
+    // console.log('wtf');
+    
+    taskObj.pushValues(values);
+    console.log(taskObj.tasks.length);
+    // taskObj.processItems();
+    console.log(values);
 }
 
 function selectionSort(barObj, taskObj) {
-	console.log('selection sort starting');
-	var values = barObj.bars;
+    console.log('selection sort starting');
+    var values = barObj.bars;
 
-	//main
-	var minIndex, tmp;
-	for (var i = 0; i < values.length - 1; i++) {
-		minIndex = i;
-		for (var j = i + 1; j < values.length; j++) {
-			taskObj.pushValues(values);
+    //main
+    var minIndex, tmp;
+    for (var i = 0; i < values.length - 1; i++) {
+        minIndex = i;
+        for (var j = i + 1; j < values.length; j++) {
+            // taskObj.pushValues(values);
 
-			if (values[j] < values[minIndex]) {
-				minIndex = j;
+            if (values[j] < values[minIndex]) {
+                minIndex = j;
+                taskObj.pushValues([values[j], values[minIndex]]);    
+            }
+            // taskObj.pushValues(values);    
+        }
 
-			}
-			// taskObj.pushValues(values);    
-		}
+        if (minIndex != i) {
+            tmp = values[i];
+            values[i] = values[minIndex];
+            values[minIndex] = tmp;
+            taskObj.pushValues([values[i], values[minIndex]]);
+            taskObj.pushValues(values);
+        }
+    }
+    //end main
 
-		if (minIndex != i) {
-			tmp = values[i];
-			values[i] = values[minIndex];
-			values[minIndex] = tmp;
-			// taskObj.pushValues(values);
-		}
-	}
-	//end main
-
-	taskObj.pushValues(values);
-	console.log(taskObj.tasks.length);
-	taskObj.processItems();
-	console.log(values);
+    taskObj.pushValues(values);
+    console.log(taskObj.tasks.length);
+    // taskObj.processItems();
+    console.log(values);
 }
 
 function insertionSort(barObj, taskObj) {
-	console.log('insertion sort starting');
-	var values = barObj.bars;
+    console.log('insertion sort starting');
+    var values = barObj.bars;
 
-	//main
-	for (var i = 0; i < values.length; i++) {
-		var k = values[i];
-		for (var j = i; j > 0 && k < values[j - 1]; j--) {
-			taskObj.pushValues(values);
-			values[j] = values[j - 1];
-		}
+    //main
+    for (var i = 0; i < values.length; i++) {
+        var k = values[i];
+        for (var j = i; j > 0 && k < values[j - 1]; j--) {
 
-		values[j] = k;
-	}
-	//end main
+            values[j] = values[j - 1];
+            taskObj.pushValues(values);
+        }
 
-	taskObj.pushValues(values);
-	console.log(taskObj.tasks.length);
-	taskObj.processItems();
-	console.log(values);
+        values[j] = k;
+        taskObj.pushValues(values);
+    }
+    //end main
+
+    taskObj.pushValues(values);
+    console.log(taskObj.tasks.length);
+    // taskObj.processItems();
+    console.log(values);
 }
 
 function quickSort(barObj, taskObj) {
-	console.log('quick sort starting');
-	var values = barObj.bars;
+    console.log('quick sort starting');
+    var values = barObj.bars;
 
-	//main
-	function _quickSort(left, right) {
-		taskObj.pushValues(values);
+    //main
+    function _quickSort(left, right) {
+        // taskObj.pushValues(values);
 
-		if (left < right) {
-			var pivot = values[left + Math.floor((right - right) / 2)],
-				left_new = left,
-				right_new = right;
+        if (left < right) {
+            var pivot = values[left + Math.floor((right - right) / 2)],
+                left_new = left,
+                right_new = right;
 
-			do {
-				taskObj.pushValues(values);
+            do {
+                // taskObj.pushValues(values);
 				
-				while (values[left_new] < pivot) {
-					taskObj.pushValues(values);
-					left_new += 1;
-				}
-				while (pivot < values[right_new]) {
-					taskObj.pushValues(values);
-					right_new -= 1;
-				}
-				if (left_new <= right_new) {
-					[values[left_new], values[right_new]] = [values[right_new], values[left_new]];
-					left_new += 1;
-					right_new -= 1;
-				}
-			} while (left_new <= right_new);
+                while (values[left_new] < pivot) {
+                    // taskObj.pushValues(values);
+                    left_new += 1;
+                }
+                while (pivot < values[right_new]) {
+                    // taskObj.pushValues(values);
+                    right_new -= 1;
+                }
+                if (left_new <= right_new) {
+                    [values[left_new], values[right_new]] = [values[right_new], values[left_new]];
+                    taskObj.pushValues(values);
+                    left_new += 1;
+                    right_new -= 1;
+                }
+            } while (left_new <= right_new);
 
-			_quickSort(left, right_new);
-			_quickSort(left_new, right);
+            _quickSort(left, right_new);
+            _quickSort(left_new, right);
 
-		}
-	}
+        }
+    }
 
-	_quickSort(0, values.length - 1);
+    _quickSort(0, values.length - 1);
 
-	//end main
+    //end main
 
-	// console.log(count);
-	taskObj.pushValues(values);
-	console.log(taskObj.tasks.length);
-	taskObj.processItems();
-	console.log(values);
+    // console.log(count);
+    taskObj.pushValues(values);
+    console.log(taskObj.tasks.length);
+    // taskObj.processItems();
+    console.log(values);
 
 }
 
 function mergeSort(barObj, taskObj) {
-	console.log('merge sort starting');
-	var values = barObj.bars;
+    console.log('merge sort starting');
+    var values = barObj.bars;
 
-	//main
+    //main
 
-	function _mergeSort(alist) {
-		// console.log("Splitting ", alist);
-		// console.log(alist);
-		taskObj.pushValues(alist);
+    function _mergeSort(alist) {
+        // console.log("Splitting ", alist);
+        // console.log(alist);
+        // taskObj.pushValues(alist);
 
-		if (alist.length > 1) {
-			var mid = Math.floor(alist.length / 2);
-			var lefthalf = alist.slice(0, mid),
-				righthalf = alist.slice(mid);
+        if (alist.length > 1) {
+            var mid = Math.floor(alist.length / 2);
+            var lefthalf = alist.slice(0, mid),
+                righthalf = alist.slice(mid);
 
-			_mergeSort(lefthalf);
-			_mergeSort(righthalf);
+            _mergeSort(lefthalf);
+            _mergeSort(righthalf);
 
-			var i = 0,
-				j = 0,
-				k = 0;
-			while (i < lefthalf.length && j < righthalf.length) {
-				taskObj.pushValues(alist);
-				if (lefthalf[i] < righthalf[j]) {
-					alist[k] = lefthalf[i];
-					i = i + 1;
-				} else {
-					alist[k] = righthalf[j];
-					j = j + 1;
-				}
+            var i = 0,
+                j = 0,
+                k = 0;
+            while (i < lefthalf.length && j < righthalf.length) {
+                // taskObj.pushValues(alist);
+                if (lefthalf[i] < righthalf[j]) {
+                    alist[k] = lefthalf[i];
+                    taskObj.pushValues(alist);
+                    i = i + 1;
+                } else {
+                    alist[k] = righthalf[j];
+                    taskObj.pushValues(alist);
+                    j = j + 1;
+                }
 
-				k = k + 1;
-			}
-
-
-			while (i < lefthalf.length) {
-				taskObj.pushValues(alist);
-				alist[k] = lefthalf[i];
-				i = i + 1;
-				k = k + 1;
-			}
+                k = k + 1;
+            }
 
 
-			while (j < righthalf.length) {
-				taskObj.pushValues(alist);
-				alist[k] = righthalf[j];
-				j = j + 1;
-				k = k + 1;
-			}
-		}
-		// console.log("Merging ", alist);
-	}
+            while (i < lefthalf.length) {
 
-	//end main
+                alist[k] = lefthalf[i];
+                taskObj.pushValues(alist);
+                i = i + 1;
+                k = k + 1;
+            }
 
-	//test
+
+            while (j < righthalf.length) {
+
+                alist[k] = righthalf[j];
+                taskObj.pushValues(alist);
+                j = j + 1;
+                k = k + 1;
+            }
+        }
+        // console.log("Merging ", alist);
+    }
+
+    //end main
+
+    //test
 
 	/*	function _mergeSort(array, first, last) {
 			// var array = values;
@@ -505,69 +571,71 @@ function mergeSort(barObj, taskObj) {
 		}*/
 
 
-	_mergeSort(values);
-	//end test
+    _mergeSort(values);
+    //end test
 
 
-	// console.log(count);
-	taskObj.pushValues(values);
-	console.log(taskObj.tasks.length);
-	taskObj.processItems();
-	console.log(values);
+    // console.log(count);
+    taskObj.pushValues(values);
+    console.log(taskObj.tasks.length);
+    // taskObj.processItems();
+    console.log(values);
 }
 
 function heapSort(barObj, taskObj) {
-	console.log('heap sort starting');
-	var values = barObj.bars;
+    console.log('heap sort starting');
+    var values = barObj.bars;
 
-	//main
+    //main
 
-	function _heapSort(arr) {
-		putArrayInHeapOrder(arr);
-		var end = arr.length - 1;
-		while (end > 0) {
-			taskObj.pushValues(values);
-			[arr[0], arr[end]] = [arr[end], arr[0]]; 
-			siftElementDownHeap(arr, 0, end);
-			end -= 1
-		}
-	}
+    function _heapSort(arr) {
+        putArrayInHeapOrder(arr);
+        var end = arr.length - 1;
+        while (end > 0) {
 
-	function putArrayInHeapOrder(arr) {
-		var i;
-		i = arr.length / 2 - 1;
-		i = Math.floor(i);
-		while (i >= 0) {
-			taskObj.pushValues(values);
-			siftElementDownHeap(arr, i, arr.length);
-			i -= 1;
-		}
-	}
+            [arr[0], arr[end]] = [arr[end], arr[0]];
+            taskObj.pushValues(values);
+            siftElementDownHeap(arr, 0, end);
+            end -= 1
+        }
+    }
 
-	function siftElementDownHeap(heap, i, max) {
-		var i_big, c1, c2;
-		while (i < max) {
-			taskObj.pushValues(values);
-			i_big = i;
-			c1 = 2 * i + 1;
-			c2 = c1 + 1;
-			if (c1 < max && heap[c1] > heap[i_big])
-				i_big = c1;
-			if (c2 < max && heap[c2] > heap[i_big])
-				i_big = c2;
-			if (i_big == i) return;
-			[heap[i], heap[i_big]] = [heap[i_big], heap[i]];
-			i = i_big;
-		}
-	}
+    function putArrayInHeapOrder(arr) {
+        var i;
+        i = arr.length / 2 - 1;
+        i = Math.floor(i);
+        while (i >= 0) {
+            // taskObj.pushValues(values);
+            siftElementDownHeap(arr, i, arr.length);
+            i -= 1;
+        }
+    }
 
-	_heapSort(values);
-	//end main
+    function siftElementDownHeap(heap, i, max) {
+        var i_big, c1, c2;
+        while (i < max) {
+            // taskObj.pushValues(values);
+            i_big = i;
+            c1 = 2 * i + 1;
+            c2 = c1 + 1;
+            if (c1 < max && heap[c1] > heap[i_big])
+                i_big = c1;
+            if (c2 < max && heap[c2] > heap[i_big])
+                i_big = c2;
+            if (i_big == i) return;
+            [heap[i], heap[i_big]] = [heap[i_big], heap[i]];
+            taskObj.pushValues(values);
+            i = i_big;
+        }
+    }
 
-	taskObj.pushValues(values);
-	console.log(taskObj.tasks.length);
-	taskObj.processItems();
-	console.log(values);
+    _heapSort(values);
+    //end main
+
+    taskObj.pushValues(values);
+    console.log(taskObj.tasks.length);
+    // taskObj.processItems();
+    console.log(values);
 }
 
 var gs = new GraphicalSort();
