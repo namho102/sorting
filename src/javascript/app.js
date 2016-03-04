@@ -37,7 +37,7 @@ class Controller {
 
         speed.forEach((el, i) => {
             d3.select("#speed").
-                append("li").append("a").attr('data-speed', i * 2).
+                append("li").append("a").attr('data-speed', i).
                 attr('class', 'option').
                 text(el);
         });
@@ -70,7 +70,7 @@ class Controller {
 
 class Bars {
     constructor(size, root) {
-        console.log('wtf');
+        // console.log('wtf');
         this.size = size;
         this.root = root;
         this.bars = shuffle(generateArray(this.size));
@@ -156,8 +156,9 @@ class Bars {
     }
 
     highlight(elements) {
+        // console.log(elements.length);
         // var rects = $('#bars').find('rect');
-        console.log('hight hihi');
+        // console.log('highlight');
         var c = '#B1D5E5';
         for (var i = 0; i < elements.length; i++) {
             $("rect[data-val=" + elements[i] + "]").css('fill', c);
@@ -196,12 +197,12 @@ class GraphicalSort {
         $('#reload').click(() => {
             this.reload();
         });
-        
+
         $('#process').click(() => {
             // this.start();    
             this.runStep();
         });
-        
+
         $('#start').click(() => {
             this.start();    
             // this.runStep();
@@ -276,7 +277,8 @@ class Task {
             nextItem = queue.shift();
             if (!nextItem) return;
             // console.log(nextItem);
-            if (nextItem.length == bars.bars.length) {
+            console.log(bars.bars.length);
+            if (nextItem.length >= bars.bars.length) {
                 bars.renderData(nextItem, true);
             }
             else {
@@ -298,7 +300,10 @@ class Task {
     popItem() {
         var nextItem = this.tasks.shift();
         // console.log(this.tasks);
-        if (nextItem.length == this.bars.bars.length) {
+        // console.log(nextItem.length);
+        // console.log(this.bars.bars.length);
+        
+        if (nextItem.length >= this.bars.bars.length) {
             this.bars.renderData(nextItem, true);
         }
         else {
@@ -323,7 +328,7 @@ class Task {
 
     getDelay() {
         var speed = $('#speed').find(".selected").data('speed');
-        return speed * 10;
+        return speed * 30;
     }
 
     clean() {
@@ -379,7 +384,7 @@ function selectionSort(barObj, taskObj) {
 
             if (values[j] < values[minIndex]) {
                 minIndex = j;
-                taskObj.pushValues([values[j], values[minIndex]]);    
+                taskObj.pushValues([values[j], values[minIndex]]);
             }
             // taskObj.pushValues(values);    
         }
@@ -438,17 +443,20 @@ function quickSort(barObj, taskObj) {
                 right_new = right;
 
             do {
-                // taskObj.pushValues(values);
-				
+                // taskObj.pushValues(values)
+                
                 while (values[left_new] < pivot) {
+                    taskObj.pushValues([values[left_new], pivot]);
                     // taskObj.pushValues(values);
                     left_new += 1;
                 }
                 while (pivot < values[right_new]) {
+                    taskObj.pushValues([pivot, values[right_new]]);
                     // taskObj.pushValues(values);
                     right_new -= 1;
                 }
                 if (left_new <= right_new) {
+                    taskObj.pushValues([left_new, right_new]);
                     [values[left_new], values[right_new]] = [values[right_new], values[left_new]];
                     taskObj.pushValues(values);
                     left_new += 1;
@@ -479,7 +487,7 @@ function mergeSort(barObj, taskObj) {
     var values = barObj.bars;
 
     //main
-
+    /*
     function _mergeSort(alist) {
         // console.log("Splitting ", alist);
         // console.log(alist);
@@ -531,51 +539,64 @@ function mergeSort(barObj, taskObj) {
         }
         // console.log("Merging ", alist);
     }
-
+    
     //end main
-
+    */
+    
     //test
 
-	/*	function _mergeSort(array, first, last) {
-			// var array = values;
-			// console.log(array);
-			taskObj.pushValues(values);
+    function _mergeSort(array, first, last) {
+        // var array = values;
+        // console.log(array);
+        // taskObj.pushValues(values);
 
-			first = (first === undefined) ? 0 : first;
-			last = (last === undefined) ? array.length - 1 : last;
-			if (last - first < 1) {
-				return
-			}
-			var middle = Math.floor((first + last) / 2);
-			_mergeSort(array, first, middle);
-			_mergeSort(array, middle + 1, last);
+        first = (first === undefined) ? 0 : first;
+        last = (last === undefined) ? array.length - 1 : last;
+        if (last - first < 1) {
+            return
+        }
+        var middle = ~~((first + last) / 2);
+        _mergeSort(array, first, middle);
+        _mergeSort(array, middle + 1, last);
 
 
-			var f = first;
-			var m = middle;
+        var f = first;
+        var m = middle;
 
-			while (f <= m && m + 1 <= last) {
-				taskObj.pushValues(values);
-				if (array[f] >= array[m + 1]) {
-					// array.insertBefore(m + 1, f);
+        while (f <= m && m + 1 <= last) {
+            // taskObj.pushValues([f, m]);
+            // taskObj.pushValues([m + 1, last]);
+            
+            // taskObj.pushValues(values);
+            if (array[f] >= array[m + 1]) {
+                taskObj.pushValues([array[f], array[m + 1]]);
+                // array.insertBefore(m + 1, f);
 
-					var from = m + 1, to = f;
-					// var temp = array[from];
-					array.insert(array[from], to)
-					// for (var i = array.length - 1; to <= i; i--) {
-					// 	// taskObj.pushValues(values);
-					// 	array[i + 1] = array[i];
-					// }
-					// array[to] = temp;
-					if (to < from) {
-						array.splice(from + 1, 1);
-					}
+                var from = m + 1, to = f;
+                // array.insert(array[from], to);
+               
+                var temp = array[from];
+               
+                for (var i = array.length - 1; to <= i; i--) {                   
+                	// taskObj.pushValues(values);
+                	array[i + 1] = array[i];
+                    // console.log(array.length);
+                    // taskObj.pushValues(array);
+                }
+                array[to] = temp;
+                
+                if (to < from) {
+                    
+                    array.splice(from + 1, 1);
+                    // console.log(array.leghth);
+                    taskObj.pushValues(array);
+                }
 
-					m++;
-				}
-				f++;
-			}
-		}*/
+                m++;
+            }
+            f++;
+        }
+    }
 
     _mergeSort(values);
     //end test
