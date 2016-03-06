@@ -13,9 +13,10 @@ function bubbleSort(a) {
 		swapped = false;
 		for (var i = 0; i < a.length - 1; i++) {
 			if (a[i] > a[i + 1]) {
-				var temp = a[i];
-				a[i] = a[i + 1];
-				a[i + 1] = temp;
+				var _ref = [a[j], a[i]];
+				a[i] = _ref[0];
+				a[j] = _ref[1];
+
 				swapped = true;
 			}
 		}
