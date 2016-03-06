@@ -51,8 +51,8 @@ var date1 = new Date();
 // console.log(array);
 mergeSort(array);
 // console.log(array);
-var date2 = new Date();
-var diff = date2 - date1;
+// var diff = date2 - date1;
+var diff = new Date() - date1;
 fs.appendFile('merge_' + size + '.txt', diff + os.EOL, 'utf8', function (err) {
     if (err) throw err;
     console.log('It\'s saved!');

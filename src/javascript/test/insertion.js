@@ -22,8 +22,8 @@ var date1 = new Date();
 // console.log(array);
 insertionSort(array);
 // console.log(array);
-var date2 = new Date();
-var diff = date2 - date1;
+// var diff = date2 - date1;
+var diff = new Date() - date1;
 fs.appendFile('insertion_' + size + '.txt', diff + os.EOL, 'utf8', (err) => {
 	if (err) throw err;
 	console.log('It\'s saved!');
