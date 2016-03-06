@@ -28,13 +28,11 @@ function mergeSort(alist) {
             k = k + 1;
         }
 
-
         while (i < lefthalf.length) {
             alist[k] = lefthalf[i];
             i = i + 1;
             k = k + 1;
         }
-
 
         while (j < righthalf.length) {
             alist[k] = righthalf[j];
@@ -43,7 +41,7 @@ function mergeSort(alist) {
         }
     }
     //end main
-
+    
 }
 
 var size = +process.argv[2];

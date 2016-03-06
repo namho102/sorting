@@ -34,10 +34,9 @@ function quickSort(values) {
             _quickSort(left_new, right);
         }
     }
+    //end main
 
     _quickSort(0, values.length - 1);
-
-    //end main
 }
 
 var size = +process.argv[2];

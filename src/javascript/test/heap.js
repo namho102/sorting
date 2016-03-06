@@ -13,8 +13,7 @@ function heapSort(arr) {
 }
 
 function putArrayInHeapOrder(arr) {
-    var i;
-    i = arr.length / 2 - 1;
+    var i = arr.length / 2 - 1;
     i = ~~i;
     while (i >= 0) {
         siftElementDownHeap(arr, i, arr.length);
