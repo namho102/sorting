@@ -3,7 +3,6 @@ var os = require("os");
 var helper = require('./helper');
 
 function selectionSort(values) {
-
     //main
     var minIndex, tmp;
     for (var i = 0; i < values.length - 1; i++) {
@@ -14,13 +13,13 @@ function selectionSort(values) {
 
             }
         }
-
         if (minIndex != i) {
-            [values[i], values[minIndex]] = [values[minIndex], values[i]];
+          var temp = values[i];
+          values[i] = values[minIndex];
+          values[minIndex] = temp;
         }
     }
     //end main
-
 }
 
 var size = +process.argv[2];

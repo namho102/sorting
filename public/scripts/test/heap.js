@@ -35,10 +35,9 @@ function siftElementDownHeap(heap, i, max) {
         if (c1 < max && heap[c1] > heap[i_big]) i_big = c1;
         if (c2 < max && heap[c2] > heap[i_big]) i_big = c2;
         if (i_big == i) return;
-        var _ref2 = [heap[i_big], heap[i]];
-        heap[i] = _ref2[0];
-        heap[i_big] = _ref2[1];
-
+        var temp = heap[i];
+        heap[i] = heap[i_big];
+        heap[i_big] = temp;
         i = i_big;
     }
 }

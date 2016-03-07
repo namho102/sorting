@@ -5,7 +5,6 @@ var os = require("os");
 var helper = require('./helper');
 
 function mergeSort(alist) {
-
     //main
     if (alist.length > 1) {
         var mid = ~ ~(alist.length / 2);

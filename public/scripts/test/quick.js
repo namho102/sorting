@@ -5,7 +5,6 @@ var os = require("os");
 var helper = require('./helper');
 
 function quickSort(values) {
-
     //main
     function _quickSort(left, right) {
         if (left < right) {
@@ -21,10 +20,9 @@ function quickSort(values) {
                     right_new -= 1;
                 }
                 if (left_new <= right_new) {
-                    var _ref = [values[right_new], values[left_new]];
-                    values[left_new] = _ref[0];
-                    values[right_new] = _ref[1];
-
+                    var temp = values[left_new];
+                    values[left_new] = values[right_new];
+                    values[right_new] = temp;
                     left_new += 1;
                     right_new -= 1;
                 }
@@ -35,7 +33,6 @@ function quickSort(values) {
         }
     }
     //end main
-
     _quickSort(0, values.length - 1);
 }
 

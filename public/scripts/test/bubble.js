@@ -6,17 +6,15 @@ var os = require("os");
 var helper = require('./helper');
 
 function bubbleSort(a) {
-
 	//main
 	var swapped;
 	do {
 		swapped = false;
 		for (var i = 0; i < a.length - 1; i++) {
 			if (a[i] > a[i + 1]) {
-				var _ref = [a[j], a[i]];
-				a[i] = _ref[0];
-				a[j] = _ref[1];
-
+				var temp = a[i];
+				a[i] = a[i + 1];
+				a[i + 1] = temp;
 				swapped = true;
 			}
 		}

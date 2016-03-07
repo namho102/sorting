@@ -5,7 +5,6 @@ var os = require("os");
 var helper = require('./helper');
 
 function insertionSort(values) {
-
     //main
     for (var i = 0; i < values.length; i++) {
         var k = values[i];

@@ -5,7 +5,6 @@ var os = require("os");
 var helper = require('./helper');
 
 function selectionSort(values) {
-
     //main
     var minIndex, tmp;
     for (var i = 0; i < values.length - 1; i++) {
@@ -15,11 +14,10 @@ function selectionSort(values) {
                 minIndex = j;
             }
         }
-
         if (minIndex != i) {
-            var _ref = [values[minIndex], values[i]];
-            values[i] = _ref[0];
-            values[minIndex] = _ref[1];
+            var temp = values[i];
+            values[i] = values[minIndex];
+            values[minIndex] = temp;
         }
     }
     //end main
