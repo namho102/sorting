@@ -531,89 +531,90 @@ function mergeSort(barObj, taskObj) {
 
     //main
 
-    function _mergeSort(alist) {
-        taskObj.pushValues(alist);
-
-        if (alist.length > 1) {
-            var mid = ~ ~(alist.length / 2);
-            var lefthalf = alist.slice(0, mid),
-                righthalf = alist.slice(mid);
-
-            _mergeSort(lefthalf);
-            _mergeSort(righthalf);
-
-            var i = 0,
-                j = 0,
-                k = 0;
-            while (i < lefthalf.length && j < righthalf.length) {
-                taskObj.pushValues(alist);
-                if (lefthalf[i] < righthalf[j]) {
+    /*    function _mergeSort(alist) {
+            taskObj.pushValues(alist);
+              if (alist.length > 1) {
+                var mid = ~~(alist.length / 2);
+                var lefthalf = alist.slice(0, mid),
+                    righthalf = alist.slice(mid);
+                  _mergeSort(lefthalf);
+                _mergeSort(righthalf);
+                  var i = 0,
+                    j = 0,
+                    k = 0;
+                while (i < lefthalf.length && j < righthalf.length) {
+                    taskObj.pushValues(alist);
+                    if (lefthalf[i] < righthalf[j]) {
+                        alist[k] = lefthalf[i];
+                        i = i + 1;
+                    } else {
+                        alist[k] = righthalf[j];
+                        j = j + 1;
+                    }
+                      k = k + 1;
+                }
+                    while (i < lefthalf.length) {
+                    taskObj.pushValues(alist);
                     alist[k] = lefthalf[i];
                     i = i + 1;
-                } else {
+                    k = k + 1;
+                }
+                    while (j < righthalf.length) {
+                    taskObj.pushValues(alist);
                     alist[k] = righthalf[j];
                     j = j + 1;
+                    k = k + 1;
                 }
-
-                k = k + 1;
-            }
-
-            while (i < lefthalf.length) {
-                taskObj.pushValues(alist);
-                alist[k] = lefthalf[i];
-                i = i + 1;
-                k = k + 1;
-            }
-
-            while (j < righthalf.length) {
-                taskObj.pushValues(alist);
-                alist[k] = righthalf[j];
-                j = j + 1;
-                k = k + 1;
             }
         }
-    }
-
-    _mergeSort(values);
+          _mergeSort(values);*/
 
     //end main
 
     //test
 
-    /*	function _mergeSort(array, first, last) {
-    // var array = values;
-    // console.log(array);
-    taskObj.pushValues(values);
-    	first = (first === undefined) ? 0 : first;
-    last = (last === undefined) ? array.length - 1 : last;
-    if (last - first < 1) {
-    return
+    function _mergeSort(array, first, last) {
+        // var array = values;
+        // console.log(array);
+        taskObj.pushValues(values);
+
+        first = first === undefined ? 0 : first;
+        last = last === undefined ? array.length - 1 : last;
+        if (last - first < 1) {
+            return;
+        }
+        var middle = Math.floor((first + last) / 2);
+        _mergeSort(array, first, middle);
+        _mergeSort(array, middle + 1, last);
+
+        var f = first;
+        var m = middle;
+
+        while (f <= m && m + 1 <= last) {
+            taskObj.pushValues(values);
+            if (array[f] >= array[m + 1]) {
+                // array.insertBefore(m + 1, f);
+
+                var from = m + 1,
+                    to = f;
+                // var temp = array[from];
+                array.insert(array[from], to);
+                // for (var i = array.length - 1; to <= i; i--) {
+                //  // taskObj.pushValues(values);
+                //  array[i + 1] = array[i];
+                // }
+                // array[to] = temp;
+                if (to < from) {
+                    array.splice(from + 1, 1);
+                }
+
+                m++;
+            }
+            f++;
+        }
     }
-    var middle = Math.floor((first + last) / 2);
-    _mergeSort(array, first, middle);
-    _mergeSort(array, middle + 1, last);
-    			var f = first;
-    var m = middle;
-    	while (f <= m && m + 1 <= last) {
-    taskObj.pushValues(values);
-    if (array[f] >= array[m + 1]) {
-    	// array.insertBefore(m + 1, f);
-    			var from = m + 1, to = f;
-    	// var temp = array[from];
-    	array.insert(array[from], to)
-    	// for (var i = array.length - 1; to <= i; i--) {
-    	// 	// taskObj.pushValues(values);
-    	// 	array[i + 1] = array[i];
-    	// }
-    	// array[to] = temp;
-    	if (to < from) {
-    		array.splice(from + 1, 1);
-    	}
-    			m++;
-    }
-    f++;
-    }
-    }*/
+
+    _mergeSort(values);
     //end test
 
     console.log(taskObj.tasks.length);
